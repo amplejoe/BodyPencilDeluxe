@@ -7,6 +7,7 @@ export class Game {
     constructor() {
         this.poseDetector = new PoseDetector(this, $("#webcamVideo")[0], 0.3, 11);
         this.speechRecognizer = new SpeechRecognizer(this.poseDetector);
+        this.speechRecognizer.startRecognition();
         this.canvas = new Canvas();
 
         this.lastPosition = null; // TODO is this the right place for this variable?
@@ -23,7 +24,10 @@ export class Game {
                 this.lastPosition = position;
             });
             // TODO remove!  (just for testing)
-            setTimeout(this.poseDetector.stopDetectionLoop.bind(this.poseDetector), 60000);
+            setTimeout(() => {
+                this.poseDetector.stopDetectionLoop();
+                this.speechRecognizer.stopRecognition();
+            }, 60000);
         });
         console.log("Game initialized.");
     }
