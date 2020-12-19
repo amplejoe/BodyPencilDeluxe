@@ -3,7 +3,7 @@ import {globals} from "./globals.js";
 export class SpeechRecognizer {
 
     static colors = ["black", "red", "blue", "green", "yellow", "orange", "brown"];
-    static commands = ["stop", "go", "plus", "minus"];
+    static commands = ["stop", "go", "small", "medium", "large"]; // plus", "minus"];
 
     // TODO extend with further common misunderstandings
     static toleranceMap = {
@@ -17,9 +17,13 @@ export class SpeechRecognizer {
         "queen": "green",
         "cream": "green",
         "continue": "go",
-        "mine": "minus",
-        "mine is": "minus",
-        "minor": "minus"
+        "midi": "medium",
+        "media": "medium",
+        "notch": "large",
+        "latch": "large",
+        // "mine": "minus",
+        // "mine is": "minus",
+        // "minor": "minus"
     }
 
     constructor(poseDetector) {
@@ -115,10 +119,12 @@ export class SpeechRecognizer {
             this.poseDetector.pauseDetectionLoop();
         } else if (command === "go") {
             this.poseDetector.resumeDetectionLoop();
-        } else if (command === "plus") {
-            globals.selectedLineWidth *= 1.5;
-        } else if (command === "minus") {
-            globals.selectedLineWidth /= 1.5;
+        } else if (command === "small") {
+            globals.selectedLineWidth = 2;
+        } else if (command === "medium") {
+            globals.selectedLineWidth = 5;
+        } else if (command === "large") {
+            globals.selectedLineWidth = 10;
         } else if (SpeechRecognizer.colors.includes(command)) {
             globals.selectedColor = command;
             this.poseDetector.resumeDetectionLoop();

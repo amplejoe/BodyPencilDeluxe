@@ -24,14 +24,14 @@ export class Game {
         console.log("Game initialized.");
     }
 
-    startPoseDetection() {
+    async startPoseDetection() {
         // find current bodypart
         let bpSelect = document.getElementById("bodyPartSelect");
         const bodyPart = BodyParts[bpSelect.value];
         console.log(`Start detection, bodypart: ${bpSelect.value}`);
 
-        this.lastPosition = null; // TODO is this the right place for this variable?
-        this.poseDetector.stopDetectionLoop();
+        await this.poseDetector.stopDetectionLoop();
+        this.lastPosition = null;
         this.poseDetector.startDetectionLoop(this, bodyPart, (position) => {
             // console.log(position);
             if (this.lastPosition) {
