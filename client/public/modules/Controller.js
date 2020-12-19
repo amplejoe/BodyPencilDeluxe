@@ -12,6 +12,8 @@ export class Controller {
         this.activeScreen = new Title();
         this.poseDetector = null;
         this.isPosDetectorInitialized = false;
+
+        this.gameSession = null;
         this.player = null;
 
         // tmp global cfg
