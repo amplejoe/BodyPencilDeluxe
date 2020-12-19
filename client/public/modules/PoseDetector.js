@@ -37,21 +37,29 @@ export class PoseDetector {
     async init(useResNet = false) {
         console.log("loading posenet...");
         if (await this.connectWebcam()) {
+
+            let posenetConfig;
             if (useResNet) {
-                this.poseNet = await posenet.load({
+                posenetConfig = {
                     architecture: 'ResNet50',
                     outputStride: 32,
                     inputResolution: {width: 257, height: 200},
                     quantBytes: 2
-                })
+                };
             } else {
-                this.poseNet = await posenet.load({
+                posenetConfig = {
                     architecture: 'MobileNetV1',
                     outputStride: 16,
                     inputResolution: {width: 640, height: 480},
                     multiplier: 0.75
-                });
+                };
             }
+            this.poseNet = await posenet.load(posenetConfig);
+
+            // the first pose estimation call takes significantly longer than subsequent ones,
+            // so do it once before the actual game starts
+            await this.poseNet.estimateSinglePose(this.videoElement);
+
             console.log("posenet ready!");
         }
     }
