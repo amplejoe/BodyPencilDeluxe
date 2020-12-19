@@ -21,6 +21,7 @@ export class SpeechRecognizer {
         "media": "medium",
         "notch": "large",
         "latch": "large",
+        "trump": "yellow",
         // "mine": "minus",
         // "mine is": "minus",
         // "minor": "minus"
