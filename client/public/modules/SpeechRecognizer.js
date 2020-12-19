@@ -9,7 +9,8 @@ export class SpeechRecognizer {
         let SpeechRecognition = webkitSpeechRecognition;
         let SpeechGrammarList = webkitSpeechGrammarList;
 
-        let colors = ["black", "red", "blue", "green", "yellow", "orange", "brown", "stop", "start"];
+        let colors = ["black", "red", "blue", "green", "yellow", "orange", "brown"]
+        let commands = ["stop", "start", "plus", "minus"];
         let grammar = '#JSGF V1.0; grammar colors; public <color> = ' + colors.join(' | ') + ' ;'
 
         let recognition = new SpeechRecognition();
@@ -45,6 +46,7 @@ export class SpeechRecognizer {
             } else if (result === "start") {
                 poseDetector.resumeDetectionLoop();
             } else if (colors.includes(result)) {
+                // TODO red is often misunderstood (brad, brett, rat, rate, rhett) -> simply accept those as red
                 globals.selectedColor = result;
                 poseDetector.resumeDetectionLoop();
             }

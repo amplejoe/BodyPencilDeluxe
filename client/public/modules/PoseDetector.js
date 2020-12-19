@@ -35,6 +35,7 @@ export class PoseDetector {
 
     // https://github.com/tensorflow/tfjs-models/tree/master/posenet
     async init(useResNet = false) {
+        console.log("loading posenet...");
         if (await this.connectWebcam()) {
             if (useResNet) {
                 this.poseNet = await posenet.load({
@@ -51,6 +52,7 @@ export class PoseDetector {
                     multiplier: 0.75
                 });
             }
+            console.log("posenet ready!");
         }
     }
 

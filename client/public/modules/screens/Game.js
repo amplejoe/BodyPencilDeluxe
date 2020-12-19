@@ -11,7 +11,7 @@ export class Game {
 
         this.lastPosition = null; // TODO is this the right place for this variable?
 
-        const bodyPart = BodyParts.rightWrist; // TODO make selectable / randomly assinged
+        const bodyPart = BodyParts.nose; // TODO make selectable / randomly assigned
 
         this.poseDetector.init(globals.useResNet).then(() => {
             // TODO start the loop based on game logic (and start command)

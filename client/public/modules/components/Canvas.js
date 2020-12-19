@@ -1,8 +1,13 @@
 export class Canvas {
     constructor() {
-        this.canvas = document.querySelector('canvas'),
+        this.canvas = document.querySelector('canvas');
         this.ctx = this.canvas.getContext('2d');
-        this.fitToContainer();
+         this.fitToContainer();
+
+        this.ctx.shadowColor = '#333';
+        this.ctx.shadowBlur = 5;
+        this.ctx.shadowOffsetX = 0;
+        this.ctx.shadowOffsetY = 0;
 
         // this.draw({x: 0.0, y: 0.0}, {x: 1.0, y: 1.0})
 
@@ -31,7 +36,7 @@ export class Canvas {
         this.ctx.strokeStyle = color;
         this.ctx.lineWidth = lineWidth;
 
-        // draw a red line
+        // draw a line
         this.ctx.beginPath();
         this.ctx.moveTo(fromX, fromY);
         this.ctx.lineTo(toX, toY);
