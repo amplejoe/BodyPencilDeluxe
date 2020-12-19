@@ -19,20 +19,39 @@ export class Controller {
     }
 
     init() {
+
+        this.populateBodyPartList();
+
         this.initPosenet();
 
         console.log("Controller initialized.")
     }
 
+    populateBodyPartList() {
+        let select = document.getElementById("bodyPartSelect");
+        let options = Object.keys(BodyParts);
+
+        for (let i = 0; i < options.length; i++) {
+            let opt = options[i];
+            let el = document.createElement("option");
+            el.textContent = opt;
+            el.value = opt;
+            select.appendChild(el);
+        }
+    }
+
+
     initPosenet() {
         this.poseDetector = new PoseDetector(this, $("#webcamVideo")[0], 0.3, 11);
-        
+
         this.poseDetector.init(globals.useResNet).then(() => {
             this.isPosDetectorInitialized = true;
             document.querySelector("#startButton").disabled = false;
-            document.querySelector("#posenet-loading").innerHTML = `
-            <i class="fas fa-thumbs-up"></i>
+            document.querySelector("#posenet-loading").innerHTML =
+            `
+                <i class="fas fa-thumbs-up"></i>
             `;
+            toastr["success"]("Ready to start!");
         });
     }
 

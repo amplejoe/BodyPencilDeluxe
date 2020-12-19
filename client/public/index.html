@@ -34,11 +34,7 @@
 
 <div id="info">
     <div id="bodyPartSelectWrapper" class="menu-col">
-        <select id="bodyPartSelect" name="fruit">
-            <option value ="none">Nothing</option>
-            <option value ="guava">Guava</option>
-            <option value ="lychee">Lychee</option>
-            <option value ="papaya">Papaya</option>
+        <select id="bodyPartSelect" name="bodyParts" onchange="controller.activeScreen.startPoseDetection()">
         </select>
     </div>
     <div id="posenetInfo" class="menu-col">

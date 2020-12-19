@@ -11,15 +11,27 @@ export class Game {
         this.canvas = new Canvas();
 
         // start detection
-        this.lastPosition = null; // TODO is this the right place for this variable?
+
         // TODO start the loop based on game logic (and start command)
-        const bodyPart = BodyParts.nose; // TODO make selectable / randomly assigned
-        this.startPoseDetection(bodyPart)
+        this.startPoseDetection();
+
+        // TODO remove!  (just for testing)
+        setTimeout(() => {
+            this.poseDetector.stopDetectionLoop();
+            this.speechRecognizer.stopRecognition();
+        }, 60000);
 
         console.log("Game initialized.");
     }
 
-    startPoseDetection(bodyPart) {
+    startPoseDetection() {
+        // find current bodypart
+        let bpSelect = document.getElementById("bodyPartSelect");
+        const bodyPart = BodyParts[bpSelect.value];
+        console.log(`Start detection, bodypart: ${bpSelect.value}`);
+
+        this.lastPosition = null; // TODO is this the right place for this variable?
+        this.poseDetector.stopDetectionLoop();
         this.poseDetector.startDetectionLoop(bodyPart, (position) => {
             // console.log(position);
             if (this.lastPosition) {
@@ -27,10 +39,5 @@ export class Game {
             }
             this.lastPosition = position;
         });
-        // TODO remove!  (just for testing)
-        setTimeout(() => {
-            this.poseDetector.stopDetectionLoop();
-            this.speechRecognizer.stopRecognition();
-        }, 60000);
     }
 }
