@@ -40,3 +40,13 @@
     -webkit-transform: scaleX(-1);
     transform: scaleX(-1);
 }
+
+/* USER INFO */
+
+#game-info {
+    /* display: flex; */
+}
+
+#draw-status {
+    background-color: red;
+}

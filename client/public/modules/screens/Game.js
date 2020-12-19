@@ -21,7 +21,14 @@ export class Game {
             this.speechRecognizer.stopRecognition();
         }, 60000);
 
+        this.showUserInfo();
+
         console.log("Game initialized.");
+    }
+
+    showUserInfo() {
+        // document.getElementById("game-info").classList.remove("hidden");
+        document.getElementById("game-info").className = "flex-centered";
     }
 
     async startPoseDetection() {
