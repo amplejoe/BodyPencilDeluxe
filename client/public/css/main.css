@@ -1,0 +1,20 @@
+.flex-centered {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flipped {
+    transform: scaleX(-1);
+}
+
+#content {
+    height: 70vh;
+    /* border: 1px solid green; */
+}
+
+.hidden {
+    display: none;
+}
+
+

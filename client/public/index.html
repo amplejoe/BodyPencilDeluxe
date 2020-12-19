@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8">
+        <title>
+            Body Pencil DeLuxe
+        </title>
+        <!-- 3rd party -->
+        <link href="./lib/fontawesome-free-5.15.1-web/css/all.css" rel="stylesheet">
+
+        <!-- game -->
+        <script type="module" src="main.js"></script>
+        <link rel="stylesheet" href="./css/main.css">
+        <link rel="stylesheet" href="./css/title.css">
+        <link rel="stylesheet" href="./css/game.css">
+        <link rel="stylesheet" href="./css/gameover.css">
+    </head>
+    <body>
+
+        <div id="heading" class="flex-centered">
+
+            <img src="./assets/img/Pencil.svg" alt="">
+            <h1>
+                Body Pencil De'Luxe
+            </h1>
+            <img class="flipped" src="./assets/img/Pencil.svg" alt="">
+        </div>
+
+        <div id="content">
+
+            <!-- TITLE -->
+            <div id="title" class="flex-centered">
+                <button onclick="controller.switchScreen('game')">Start</button>
+            </div>
+
+            <!-- GAME -->
+            <div id="game" class="hidden">
+                <div id="cam">
+                    <i class="fas fa-camera fa-4x"></i>
+                </div>
+                <div id="canvasWrapper">
+                    <canvas id="canvas"></canvas>
+                </div>
+            </div>
+
+            <!-- GAME OVER -->
+            <div id="gameover" class="hidden">
+                Game Over!
+            </div>
+
+        </div>
+
+    </body>
+</html>
