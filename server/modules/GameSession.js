@@ -13,6 +13,8 @@ class GameSession {
         this.state = GAME_STATES.LOBBY;
     }
 
+    // TODO emit "updateGameSession" event when something changes
+
     addPlayer(player) {
         if (this.state === GAME_STATES.LOBBY) {
             player.gameSession = this;
