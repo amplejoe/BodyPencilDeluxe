@@ -33,16 +33,19 @@
 </div>
 
 <div id="info">
-    <div id="bodyPartSelectWrapper" class="menu-col">
-        <select id="bodyPartSelect" name="bodyParts" onchange="controller.activeScreen.startPoseDetection()">
-        </select>
-    </div>
+    <!-- PoseNet status indicator -->
     <div id="posenet-info" class="menu-col">
         <span id="posenet-text"></span>
         <span id="posenet-loading">
             <i class="fas fa-spinner fa-spin"></i>
         </span>
     </div>
+    <!-- BodyPart selector -->
+    <div id="bodyPartSelectWrapper" class="menu-col">
+        <select id="bodyPartSelect" name="bodyParts" onchange="controller.activeScreen.startPoseDetection()">
+        </select>
+    </div>
+    <!-- FPS display -->
     <div id="fps" class="menu-col">FPS: None</div>
 </div>
 
