@@ -31,3 +31,7 @@
     /* border: 1px solid green; */
 }
 
+#webcamVideo {
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+}
