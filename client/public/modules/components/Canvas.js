@@ -13,6 +13,10 @@ export class Canvas {
 
         // this.ctx.fillStyle='yellow';
         // for (var i=0;i<5;++i) this.ctx.fillRect(i*18+2,2,16,16);
+
+        // set last styles and position for setting the begin
+        this.lastPos = null;
+        this.lastColor = null;
     }
 
     fitToContainer() {
@@ -36,10 +40,18 @@ export class Canvas {
         this.ctx.strokeStyle = color;
         this.ctx.lineWidth = lineWidth;
 
+        // begin if color changed or line begins ..
+        if (!this.lastPos || !(this.lastColor === color)) {
+          this.ctx.beginPath();
+          this.ctx.moveTo(fromX, fromY);
+        }
+        this.lastPos = to;
+        this.lastColor = color;
         // draw a line
-        this.ctx.beginPath();
-        this.ctx.moveTo(fromX, fromY);
+        // this.ctx.moveTo(fromX, fromY); // done above ..
         this.ctx.lineTo(toX, toY);
         this.ctx.stroke();
+
+
     }
 }
