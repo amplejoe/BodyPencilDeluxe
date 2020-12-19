@@ -19,8 +19,7 @@ export const BodyParts = {
 }
 
 export class PoseDetector {
-    constructor(game, videoElement, minScore = 0.3, windowSize = 11) {
-        this.game = game;
+    constructor(videoElement, minScore = 0.3, windowSize = 11) {
         this.videoElement = videoElement;
         this.minScore = minScore;
         this.windowSize = windowSize;
@@ -80,7 +79,8 @@ export class PoseDetector {
         }
     }
 
-    async startDetectionLoop(bodyPart, callback) {
+    async startDetectionLoop(game, bodyPart, callback) {
+        this.game = game;
         if (!this.running) {
             this.running = true;
             this.paused = false;
@@ -113,6 +113,7 @@ export class PoseDetector {
         }
     }
 
+    // TODO must be async!
     stopDetectionLoop() {
         this.running = false;
         this.paused = false;

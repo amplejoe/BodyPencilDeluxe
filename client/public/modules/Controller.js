@@ -42,7 +42,7 @@ export class Controller {
 
 
     initPosenet() {
-        this.poseDetector = new PoseDetector(this, $("#webcamVideo")[0], 0.3, 11);
+        this.poseDetector = new PoseDetector($("#webcamVideo")[0], 0.3, 11);
 
         this.poseDetector.init(globals.useResNet).then(() => {
             this.isPosDetectorInitialized = true;

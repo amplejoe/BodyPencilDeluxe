@@ -3,7 +3,24 @@ import {globals} from "./globals.js";
 export class SpeechRecognizer {
 
     static colors = ["black", "red", "blue", "green", "yellow", "orange", "brown"];
-    static commands = ["stop", "start", "plus", "minus"];
+    static commands = ["stop", "go", "plus", "minus"];
+
+    // TODO extend with further common misunderstandings
+    static toleranceMap = {
+        "brad": "red",
+        "brett": "red",
+        "rat": "red",
+        "rad": "red",
+        "bread": "red",
+        "rate": "red",
+        "rhett": "red",
+        "queen": "green",
+        "cream": "green",
+        "continue": "go",
+        "mine": "minus",
+        "mine is": "minus",
+        "minor": "minus"
+    }
 
     constructor(poseDetector) {
         this.poseDetector = poseDetector; // we need the poseDetector to call the pause() function
@@ -25,6 +42,9 @@ export class SpeechRecognizer {
         this.recognition.interimResults = true;
         this.recognition.maxAlternatives = 3;
 
+        // remember the highest index of the results array that has already been identified as valid command
+        this.latestValidResultIdx = -1;
+
         this.initHandlers();
     }
 
@@ -39,30 +59,21 @@ export class SpeechRecognizer {
             // The second [0] returns the SpeechRecognitionAlternative at position 0.
             // We then return the transcript property of the SpeechRecognitionAlternative object
 
-            /* TODO
-                    - consider every result (also non-final results)
-                    - consider all alternatives
-                    - consider list of frequent
-                    - if something is recognized -> remember this array position and don't consider again
+            // consider every result (also non-final results) -> faster reaction (otherwise noticeable delay)
+            // consider the 3 most probable alternatives
+            // consider list of frequent misunderstandings (tolerance list)
+            // if something is recognized -> remember this array position and don't consider again (e.g., if a final result arrives later)
 
-             */
-
-            console.log(event.results);
-
-            let result = event.results[event.results.length - 1][0].transcript;
-            // console.log('Result received: ' + result);
-            // console.log('Confidence: ' + event.results[event.results.length - 1][0].confidence);
-
-            result = result.trim().toLowerCase();
-            if (result === "stop") {
-                this.poseDetector.pauseDetectionLoop();
-            } else if (result === "start") {
-                this.poseDetector.resumeDetectionLoop();
-                // TODO commands for stroke thickness
-            } else if (SpeechRecognizer.colors.includes(result)) {
-                // TODO red is often misunderstood (brad, brett, rat, rate, rhett) -> simply accept those as red ("tolerance list")
-                globals.selectedColor = result;
-                this.poseDetector.resumeDetectionLoop();
+            let latestResultIdx = event.results.length - 1;
+            if (latestResultIdx > this.latestValidResultIdx) {  // ignore further versions of the same result if it has already been identified as valid
+                let latestResult = event.results[latestResultIdx];
+                for (let alternative of latestResult) {
+                    if (this.commandDetected(alternative.transcript)) {
+                        this.latestValidResultIdx = latestResultIdx;
+                        console.log("latest valid result: " + latestResultIdx);
+                        break;
+                    }
+                }
             }
         }
 
@@ -87,6 +98,35 @@ export class SpeechRecognizer {
             // restart... (this happens when the "no-speech" error is thrown)
             this.recognition.start();
         }
+    }
+
+    commandDetected(recognizedPhrase) {
+        let command = recognizedPhrase.trim().toLowerCase();
+
+        // account for common mistakes (e.g., Bratt instead of red...)
+        if (SpeechRecognizer.toleranceMap[command]) {
+            console.log("understood " + command + " -> " + SpeechRecognizer.toleranceMap[command]);
+            command = SpeechRecognizer.toleranceMap[command];
+        }
+
+        console.log("command: " + command);
+
+        if (command === "stop") {
+            this.poseDetector.pauseDetectionLoop();
+        } else if (command === "go") {
+            this.poseDetector.resumeDetectionLoop();
+        } else if (command === "plus") {
+            globals.selectedLineWidth *= 1.5;
+        } else if (command === "minus") {
+            globals.selectedLineWidth /= 1.5;
+        } else if (SpeechRecognizer.colors.includes(command)) {
+            globals.selectedColor = command;
+            this.poseDetector.resumeDetectionLoop();
+        } else {
+            return false;
+        }
+
+        return true;
     }
 
     startRecognition() {

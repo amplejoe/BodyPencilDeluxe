@@ -32,10 +32,10 @@ export class Game {
 
         this.lastPosition = null; // TODO is this the right place for this variable?
         this.poseDetector.stopDetectionLoop();
-        this.poseDetector.startDetectionLoop(bodyPart, (position) => {
+        this.poseDetector.startDetectionLoop(this, bodyPart, (position) => {
             // console.log(position);
             if (this.lastPosition) {
-                this.canvas.draw(this.lastPosition, position, 3, globals.selectedColor)
+                this.canvas.draw(this.lastPosition, position, globals.selectedLineWidth, globals.selectedColor)
             }
             this.lastPosition = position;
         });
