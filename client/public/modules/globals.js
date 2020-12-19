@@ -1,5 +1,7 @@
 var globals = {};
 
+globals.websocketURL = "localhost:3001";
+
 globals.testvar = 3;
 
 globals.selectedColor = "black";

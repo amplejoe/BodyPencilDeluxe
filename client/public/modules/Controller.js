@@ -1,13 +1,14 @@
-
 import { Title } from './screens/Title.js';
 import { Game } from './screens/Game.js';
 import { GameOver } from './screens/GameOver.js';
 import { globals } from './globals.js'
 import {BodyParts, PoseDetector} from "./PoseDetector.js";
+import {WebSocketHandler} from "./WebSocketHandler.js";
 
 export class Controller {
     constructor() {
 
+        this.websocketHandler = new WebSocketHandler(globals.websocketURL);
         this.activeScreen = new Title();
         this.poseDetector = null;
         this.isPosDetectorInitialized = false;
@@ -19,8 +20,6 @@ export class Controller {
     }
 
     init() {
-
-
         this.populateBodyPartList();
 
         this.setNetUrlParam() // choose between ["resnet", "mobilenet"]
