@@ -5,16 +5,20 @@ import {BodyParts} from "../PoseDetector.js";
 
 export class Game {
     constructor(poseDetector) {
+        // init
         this.poseDetector = poseDetector;
-        this.speechRecognizer = new SpeechRecognizer(this.poseDetector);
+        this.isDrawing = false;
+
+        // speech
+        this.speechRecognizer = new SpeechRecognizer(this);
         this.speechRecognizer.startRecognition();
         this.canvas = new Canvas();
         $('#pointer').show(); // show pointer
 
-        // start detection
-
+        // pose detection
         // TODO start the loop based on game logic (and start command)
         this.startPoseDetection();
+        this.startDrawing();
 
         // TODO remove!  (just for testing)
         setTimeout(() => {
@@ -32,6 +36,15 @@ export class Game {
         document.getElementById("game-info").className = "flex-centered";
     }
 
+    startDrawing() {
+        this.isDrawing = true;
+    }
+
+    pauseDrawing() {
+        this.isDrawing = false;
+        this.lastPosition = null;
+    }
+
     async startPoseDetection() {
         // find current bodypart
         let bpSelect = document.getElementById("bodyPartSelect");
@@ -42,9 +55,10 @@ export class Game {
         this.lastPosition = null;
         this.poseDetector.startDetectionLoop(this, bodyPart, (position) => {
             // console.log(position);
-            if (this.lastPosition) {
+            if (this.isDrawing && this.lastPosition) {
                 this.canvas.draw(this.lastPosition, position, globals.selectedLineWidth, globals.selectedColor)
             }
+            this.canvas.movePointer(position);
             this.lastPosition = position;
         });
     }

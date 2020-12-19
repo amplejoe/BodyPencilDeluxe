@@ -31,6 +31,16 @@ export class Canvas {
         this.canvas.height = this.canvas.offsetHeight;
     }
 
+    floatToPixelCoords(floatCoords) {
+        return {x: floatCoords.x * this.canvas.width, y: floatCoords.y * this.canvas.height}
+    }
+
+    movePointer(to) {
+        const coords = this.floatToPixelCoords(to)
+        this.pointer.style.left = this.canvas.getBoundingClientRect().left + coords.x + "px";
+        this.pointer.style.top  = this.canvas.getBoundingClientRect().top + coords.y + "px";
+    }
+
 
     // points (from/to) are floats betw. 0.0-1.0 in format {x, y}, e.g. {0.2, 0.9}
     draw(from, to, lineWidth = 3, color = "black") {
@@ -77,10 +87,7 @@ export class Canvas {
           // draw a line
           // this.ctx.moveTo(fromX, fromY); // done above ..
           //this.ctx.lineTo(toX, toY);
-          this.ctx.quadraticCurveTo(cX* this.canvas.width, cY* this.canvas.height, toX, toY)
-
-          this.pointer.style.left = this.canvas.getBoundingClientRect().left + toX + "px";
-          this.pointer.style.top  = this.canvas.getBoundingClientRect().top + toY + "px";
+          this.ctx.quadraticCurveTo(cX* this.canvas.width, cY* this.canvas.height, toX, toY);
           this.ctx.stroke();
         }
 

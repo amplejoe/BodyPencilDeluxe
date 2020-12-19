@@ -27,8 +27,8 @@ export class SpeechRecognizer {
         // "minor": "minus"
     }
 
-    constructor(poseDetector) {
-        this.poseDetector = poseDetector; // we need the poseDetector to call the pause() function
+    constructor(game) {
+        this.game = game; // we need the Game to call the pause() function
 
         let SpeechRecognition_ = window.SpeechRecognition || webkitSpeechRecognition;
         let SpeechGrammarList_ = window.SpeechGrammarList || webkitSpeechGrammarList;
@@ -117,10 +117,10 @@ export class SpeechRecognizer {
         console.log("command: " + command);
 
         if (command === "stop") {
-            this.poseDetector.pauseDetectionLoop();
+            this.game.pauseDrawing();
             document.getElementById("draw-status").style.backgroundColor = "gray";
         } else if (command === "go") {
-            this.poseDetector.resumeDetectionLoop();
+            this.game.startDrawing();
             document.getElementById("draw-status").style.backgroundColor = "red";
             if (controller.activeScreen.canvas) {
               controller.activeScreen.canvas.drawBegin();
@@ -137,7 +137,7 @@ export class SpeechRecognizer {
         } else if (SpeechRecognizer.colors.includes(command)) {
             globals.selectedColor = command;
             document.getElementById("color-status").style.backgroundColor = command;
-            this.poseDetector.resumeDetectionLoop();
+            this.game.startDrawing();
             document.getElementById("draw-status").style.backgroundColor = "red";
         } else {
             return false;

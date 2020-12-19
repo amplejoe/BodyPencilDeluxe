@@ -27,7 +27,7 @@ export class PoseDetector {
 
         this.poseNet = null;
         this.running = false;
-        this.paused = false;
+        // this.paused = false;
         this.videoWidth = this.videoElement.width;  // needed for
         this.videoHeight = this.videoElement.height;
     }
@@ -83,7 +83,6 @@ export class PoseDetector {
         this.game = game;
         if (!this.running) {
             this.running = true;
-            this.paused = false;
             while (this.running) {
                 const ts = new Date();
                 this.estimationInProgress = true;
@@ -100,9 +99,7 @@ export class PoseDetector {
                 const fps = Math.round(1000 / duration);
                 $("#fps").html(`FPS: ${fps}`);
 
-                if (this.paused) {
-
-                } else if (pose && pose.keypoints && pose.keypoints[bodyPart]) {
+                if (pose && pose.keypoints && pose.keypoints[bodyPart]) {
                     const position = pose.keypoints[bodyPart].position;
                     // normalize
                     position.x = position.x / this.videoWidth;
@@ -122,22 +119,12 @@ export class PoseDetector {
     async stopDetectionLoop() {
         return new Promise((resolve, reject) => {
             this.running = false;
-            this.paused = false;
             if (this.estimationInProgress) {
                 this.stopCallback = resolve;
             } else {
                 resolve();
             }
         });
-    }
-
-    pauseDetectionLoop() {
-        this.paused = true;
-        this.game.lastPosition = null;
-    }
-
-    resumeDetectionLoop() {
-        this.paused = false;
     }
 
 }
