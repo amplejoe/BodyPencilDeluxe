@@ -1,11 +1,8 @@
 export class Title {
-    constructor() {
+    constructor(webSocketHandler) {
+        this.webSocketHandler = webSocketHandler;
 
         console.log("Title initialized.");
-
-        controller.websocketHandler.getAllJoinableSessions((sessions) => {
-            // TODO fill dropdown list
-        });
 
     }
 }

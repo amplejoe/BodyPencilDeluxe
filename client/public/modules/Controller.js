@@ -8,18 +8,25 @@ import {WebSocketHandler} from "./WebSocketHandler.js";
 export class Controller {
     constructor() {
 
-        this.websocketHandler = new WebSocketHandler(this, globals.websocketURL);
-        this.activeScreen = new Title();
+        this.initWebsocketHandler().then(
+            () => {
+                this.activeScreen = new Title(this.websocketHandler);
+            }
+        );
+
         this.poseDetector = null;
         this.isPosDetectorInitialized = false;
 
         this.gameSession = null;
         this.player = null;
 
-        // tmp global cfg
-        console.log(`test cfg -- globals.testvar: ${globals.testvar}`)
-
         this.init();
+    }
+
+    async initWebsocketHandler() {
+        return new Promise( (res, rej) => {
+            this.websocketHandler = new WebSocketHandler(this, globals.websocketURL, res);
+        });
     }
 
     init() {
