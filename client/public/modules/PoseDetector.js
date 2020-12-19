@@ -86,9 +86,15 @@ export class PoseDetector {
             this.paused = false;
             while (this.running) {
                 const ts = new Date();
+                this.estimationInProgress = true;
                 const pose = await this.poseNet.estimateSinglePose(this.videoElement, {
                     flipHorizontal: true
                 });
+                this.estimationInProgress = false;
+                if (this.stopCallback) {
+                    this.stopCallback();
+                    this.stopCallback = null;
+                }
                 const ts2 = new Date();
                 const duration = ts2 - ts;
                 const fps = Math.round(1000 / duration);
@@ -113,10 +119,16 @@ export class PoseDetector {
         }
     }
 
-    // TODO must be async!
-    stopDetectionLoop() {
-        this.running = false;
-        this.paused = false;
+    async stopDetectionLoop() {
+        return new Promise((resolve, reject) => {
+            this.running = false;
+            this.paused = false;
+            if (this.estimationInProgress) {
+                this.stopCallback = resolve;
+            } else {
+                resolve();
+            }
+        });
     }
 
     pauseDetectionLoop() {

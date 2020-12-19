@@ -115,6 +115,7 @@ export class SpeechRecognizer {
             this.poseDetector.pauseDetectionLoop();
         } else if (command === "go") {
             this.poseDetector.resumeDetectionLoop();
+            // TODO define presets (e.g., small, medium, large)
         } else if (command === "plus") {
             globals.selectedLineWidth *= 1.5;
         } else if (command === "minus") {
