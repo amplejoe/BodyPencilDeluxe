@@ -1,20 +1,57 @@
+/* LAYOUT */
+
+#heading {
+    min-height: 15vh;
+    border: 1px solid green;
+}
+
+#info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 10vh;
+    border: 1px solid green;
+}
+
+#content {
+    min-height: 75vh;
+    border: 1px solid green;
+    overflow: hidden;
+}
+
+/* NAV */
+
+.menu-col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    height: 100%;
+    min-width: 10px;
+    background-color: red;
+}
+
+/* MISC */
+
 .flex-centered {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
 .flipped {
     transform: scaleX(-1);
 }
 
-#content {
-    height: 70vh;
-    /* border: 1px solid green; */
-}
-
 .hidden {
     display: none;
 }
+
+
 
 

@@ -3,7 +3,7 @@
     margin: 20px;
 }
 
-#cam {
+#camWrapper {
     color: white;
     background-color: #383e42;
     width: 40%;
@@ -18,8 +18,8 @@
 }
 
 #canvasWrapper {
-    width: 40%;
-    height: 60vh;
+    width: 640px;
+    height: 480px;
     border: 1px solid #383e42;
 
     /* tmp - center txt */
