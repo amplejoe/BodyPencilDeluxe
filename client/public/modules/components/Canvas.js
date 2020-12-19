@@ -18,6 +18,7 @@ export class Canvas {
 
         // set last styles and position for setting the begin
         this.lastPos = null;
+        this.beforeLastPos = null;
         this.lastColor = null;
         this.lastLineWidth = null;
     }
@@ -48,17 +49,33 @@ export class Canvas {
         if (!this.lastPos || !(this.lastColor === color) || !(this.lastLineWidth === lineWidth)) {
           this.ctx.beginPath();
           this.ctx.moveTo(fromX, fromY);
+          this.lastPos = from;
         } else { // check if delta to the last position is big enough ..
           let d = (fromX-toX)*(fromX-toX) + (fromY-toY)*(fromY-toY)
           if (d < 16)  paint = false
         }
         if (paint) {
+          // compute arc if needed ... using the quadraticCurveTo
+          let cX = 0;
+          let cY = 0;
+          let curvyness = 0.2;
+          if (!this.beforeLastPos) {
+            cX = this.lastPos.x
+            cY = this.lastPos.y
+          } else {
+            cX = this.lastPos.x + (this.lastPos.x - this.beforeLastPos.x)*curvyness;
+            cY = this.lastPos.y + (this.lastPos.y - this.beforeLastPos.y)*curvyness;
+          }
+
+          // reset memory from the last step
+          this.beforeLastPos = this.lastPos;
           this.lastPos = to;
           this.lastColor = color;
           this.lastLineWidth = lineWidth;
           // draw a line
           // this.ctx.moveTo(fromX, fromY); // done above ..
-          this.ctx.lineTo(toX, toY);
+          //this.ctx.lineTo(toX, toY);
+          this.ctx.quadraticCurveTo(cX* this.canvas.width, cY* this.canvas.height, toX, toY)
           this.ctx.stroke();
         }
 
@@ -67,6 +84,9 @@ export class Canvas {
     drawBegin() {
       // check ..
       this.ctx.beginPath();
-      console.log("Should go on like rocket science.")
+      // console.log("#DEBUG - Should go on like rocket science.")
+      this.lastPos = null;
+      this.beforeLastPos = null;
+
     }
 }
