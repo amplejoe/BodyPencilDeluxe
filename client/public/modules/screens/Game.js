@@ -9,6 +9,7 @@ export class Game {
         this.speechRecognizer = new SpeechRecognizer(this.poseDetector);
         this.speechRecognizer.startRecognition();
         this.canvas = new Canvas();
+        $('#pointer').show(); // show pointer
 
         // start detection
 

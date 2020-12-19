@@ -1,6 +1,7 @@
 export class Canvas {
     constructor() {
         this.canvas = document.querySelector('canvas');
+        this.pointer = document.querySelector('#pointer');
         this.ctx = this.canvas.getContext('2d');
         this.fitToContainer();
 
@@ -77,6 +78,9 @@ export class Canvas {
           // this.ctx.moveTo(fromX, fromY); // done above ..
           //this.ctx.lineTo(toX, toY);
           this.ctx.quadraticCurveTo(cX* this.canvas.width, cY* this.canvas.height, toX, toY)
+
+          this.pointer.style.left = this.canvas.getBoundingClientRect().left + toX + "px";
+          this.pointer.style.top  = this.canvas.getBoundingClientRect().top + toY + "px";
           this.ctx.stroke();
         }
 
