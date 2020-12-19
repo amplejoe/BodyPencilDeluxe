@@ -8,10 +8,11 @@ import {WebSocketHandler} from "./WebSocketHandler.js";
 export class Controller {
     constructor() {
 
-        this.websocketHandler = new WebSocketHandler(globals.websocketURL);
+        this.websocketHandler = new WebSocketHandler(this, globals.websocketURL);
         this.activeScreen = new Title();
         this.poseDetector = null;
         this.isPosDetectorInitialized = false;
+        this.player = null;
 
         // tmp global cfg
         console.log(`test cfg -- globals.testvar: ${globals.testvar}`)
