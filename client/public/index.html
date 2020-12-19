@@ -41,6 +41,12 @@
             <option value ="papaya">Papaya</option>
         </select>
     </div>
+    <div id="posenetInfo" class="menu-col">
+        Posenet:
+        <span id="posenet-loading">
+            <i class="fas fa-spinner fa-spin"></i>
+        </span>
+    </div>
     <div id="fps" class="menu-col">FPS: None</div>
 </div>
 
@@ -48,8 +54,7 @@
 
     <!-- TITLE -->
     <div id="title" class="flex-centered">
-        <button onclick="controller.switchScreen('game')">Start</button>
-        <!-- <i class="fas fa-spinner fa-spin"></i> -->
+        <button id="startButton" onclick="controller.switchScreen('game')" disabled>Start</button>
     </div>
 
     <!-- GAME -->
