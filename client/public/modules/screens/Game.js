@@ -45,6 +45,10 @@ export class Game {
         this.lastPosition = null;
     }
 
+    retry() {
+        this.canvas.clear();
+    }
+
     async startPoseDetection() {
         // find current bodypart
         let bpSelect = document.getElementById("bodyPartSelect");

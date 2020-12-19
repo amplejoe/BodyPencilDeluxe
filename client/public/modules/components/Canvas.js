@@ -93,6 +93,11 @@ export class Canvas {
 
     }
 
+    clear() {
+      this.lastPos = null;
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+
     drawBegin() {
       // check ..
       this.ctx.beginPath();

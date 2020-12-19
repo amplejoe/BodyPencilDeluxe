@@ -49,6 +49,7 @@
 
 #draw-status {
     background-color: red;
+    width: 25px;
 }
 
 #color-status {
