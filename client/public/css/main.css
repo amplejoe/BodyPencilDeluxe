@@ -32,6 +32,12 @@
     margin-right: 5px;
     height: 100%;
     min-width: 10px;
+    background-color: gray;
+    color: white;
+    border-radius: 5px;
+}
+
+#posenet-info {
     background-color: red;
 }
 

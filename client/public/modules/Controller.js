@@ -20,11 +20,31 @@ export class Controller {
 
     init() {
 
+
         this.populateBodyPartList();
 
+        this.setNetUrlParam() // choose between ["resnet", "mobilenet"]
         this.initPosenet();
 
         console.log("Controller initialized.")
+    }
+
+    setNetUrlParam() {
+
+        // set url parameter to desired pose net
+        let useResNet = globals.useResNet; // take default if not already defined
+        let currentNetParam = globals.findGetParameter("net");
+        if (currentNetParam) {
+            useResNet = currentNetParam === "resnet" ? true : false;
+        }
+        let newURL = globals.updateURLParameter(window.location.href, 'net', useResNet ? "resnet" : "mobilenet");
+        window.history.replaceState('', '', newURL);
+
+        document.querySelector("#posenet-text").innerHTML =
+        `
+            ${globals.findGetParameter("net")}:&nbsp;
+        `;
+
     }
 
     populateBodyPartList() {
@@ -42,15 +62,25 @@ export class Controller {
 
 
     initPosenet() {
+        console.log();
+
+        let useResNet = globals.findGetParameter("net") === "resnet" ? true : false;
+
+        console.log("Using Resnet: " + useResNet);
+
         this.poseDetector = new PoseDetector($("#webcamVideo")[0], 0.3, 11);
 
-        this.poseDetector.init(globals.useResNet).then(() => {
+        this.poseDetector.init(useResNet).then(() => {
             this.isPosDetectorInitialized = true;
-            document.querySelector("#startButton").disabled = false;
+            document.querySelector("#start-button").disabled = false;
+            document.querySelector("#posenet-info").style.backgroundColor = "green";
+
             document.querySelector("#posenet-loading").innerHTML =
             `
                 <i class="fas fa-thumbs-up"></i>
             `;
+
+
             toastr["success"]("Ready to start!");
         });
     }

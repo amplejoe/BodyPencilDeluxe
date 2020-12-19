@@ -37,8 +37,8 @@
         <select id="bodyPartSelect" name="bodyParts" onchange="controller.activeScreen.startPoseDetection()">
         </select>
     </div>
-    <div id="posenetInfo" class="menu-col">
-        Posenet:
+    <div id="posenet-info" class="menu-col">
+        <span id="posenet-text"></span>
         <span id="posenet-loading">
             <i class="fas fa-spinner fa-spin"></i>
         </span>
@@ -50,7 +50,7 @@
 
     <!-- TITLE -->
     <div id="title" class="flex-centered">
-        <button id="startButton" onclick="controller.switchScreen('game')" disabled>Start</button>
+        <button id="start-button" onclick="controller.switchScreen('game')" disabled>Start</button>
     </div>
 
     <!-- GAME -->
