@@ -52,7 +52,8 @@ export class Canvas {
           this.lastPos = from;
         } else { // check if delta to the last position is big enough ..
           let d = (fromX-toX)*(fromX-toX) + (fromY-toY)*(fromY-toY)
-          if (d < 16)  paint = false
+          if (d < 3*3)  // set quadratic radius
+            paint = false
         }
         if (paint) {
           // compute arc if needed ... using the quadraticCurveTo
