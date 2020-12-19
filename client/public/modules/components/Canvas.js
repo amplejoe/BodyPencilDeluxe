@@ -4,10 +4,12 @@ export class Canvas {
         this.ctx = this.canvas.getContext('2d');
         this.fitToContainer();
 
+        /*
         this.ctx.shadowColor = '#333';
         this.ctx.shadowBlur = 5;
         this.ctx.shadowOffsetX = 0;
         this.ctx.shadowOffsetY = 0;
+        */
 
         // this.draw({x: 0.0, y: 0.0}, {x: 1.0, y: 1.0})
 
@@ -17,6 +19,7 @@ export class Canvas {
         // set last styles and position for setting the begin
         this.lastPos = null;
         this.lastColor = null;
+        this.lastLineWidth = null;
     }
 
     fitToContainer() {
@@ -40,18 +43,30 @@ export class Canvas {
         this.ctx.strokeStyle = color;
         this.ctx.lineWidth = lineWidth;
 
-        // begin if color changed or line begins ..
-        if (!this.lastPos || !(this.lastColor === color)) {
+        let paint = true;
+        // begin if color changed, style,  or line begins ..
+        if (!this.lastPos || !(this.lastColor === color) || !(this.lastLineWidth === lineWidth)) {
           this.ctx.beginPath();
           this.ctx.moveTo(fromX, fromY);
+        } else { // check if delta to the last position is big enough ..
+          let d = (fromX-toX)*(fromX-toX) + (fromY-toY)*(fromY-toY)
+          if (d < 16)  paint = false
         }
-        this.lastPos = to;
-        this.lastColor = color;
-        // draw a line
-        // this.ctx.moveTo(fromX, fromY); // done above ..
-        this.ctx.lineTo(toX, toY);
-        this.ctx.stroke();
+        if (paint) {
+          this.lastPos = to;
+          this.lastColor = color;
+          this.lastLineWidth = lineWidth;
+          // draw a line
+          // this.ctx.moveTo(fromX, fromY); // done above ..
+          this.ctx.lineTo(toX, toY);
+          this.ctx.stroke();
+        }
 
+    }
 
+    drawBegin() {
+      // check ..
+      this.ctx.beginPath();
+      console.log("Should go on like rocket science.")
     }
 }

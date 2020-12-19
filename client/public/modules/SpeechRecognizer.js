@@ -119,6 +119,9 @@ export class SpeechRecognizer {
             this.poseDetector.pauseDetectionLoop();
         } else if (command === "go") {
             this.poseDetector.resumeDetectionLoop();
+            if (controller.activeScreen.canvas) {
+              controller.activeScreen.canvas.drawBegin();
+            }
         } else if (command === "small") {
             globals.selectedLineWidth = 2;
         } else if (command === "medium") {
