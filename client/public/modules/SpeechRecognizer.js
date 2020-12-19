@@ -118,20 +118,27 @@ export class SpeechRecognizer {
 
         if (command === "stop") {
             this.poseDetector.pauseDetectionLoop();
+            document.getElementById("draw-status").style.backgroundColor = "gray";
         } else if (command === "go") {
             this.poseDetector.resumeDetectionLoop();
+            document.getElementById("draw-status").style.backgroundColor = "red";
             if (controller.activeScreen.canvas) {
               controller.activeScreen.canvas.drawBegin();
             }
         } else if (command === "small") {
             globals.selectedLineWidth = 2;
+            document.getElementById("line-status").innerHTML = "small";
         } else if (command === "medium") {
             globals.selectedLineWidth = 5;
+            document.getElementById("line-status").innerHTML = "medium";
         } else if (command === "large") {
             globals.selectedLineWidth = 10;
+            document.getElementById("line-status").innerHTML = "large";
         } else if (SpeechRecognizer.colors.includes(command)) {
             globals.selectedColor = command;
+            document.getElementById("color-status").style.backgroundColor = command;
             this.poseDetector.resumeDetectionLoop();
+            document.getElementById("draw-status").style.backgroundColor = "red";
         } else {
             return false;
         }
