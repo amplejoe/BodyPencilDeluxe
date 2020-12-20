@@ -8,7 +8,7 @@ const gameServer = require('./server_modules/GameServer');
 gameServer.start(http);
 
 var hostFolder = "public";
-var port = 3000;
+var port = process.env.PORT || 3000;
 
 // host public folder
 app.use(express.static(hostFolder));
