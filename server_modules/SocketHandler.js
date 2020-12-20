@@ -83,9 +83,24 @@ class SocketHandler {
 
         socket.on('startSession', (data, callback) => {
             // TODO
+            //  - set session state
+            //  - determine player roles
 
             this.broadcastJoinableSessions();
         });
+
+        socket.on('startRound', (term, callback) => {
+            // TODO
+            //  - send the term to the players
+            //  - start countdown
+            //  - send event when countdown is over
+        });
+
+        socket.on('rating', (winner, callback) => {
+            // TODO
+            //  - add points, notify all players
+        });
+
 
         socket.on('signalRTC', data => {
             let otherSocket = this.playerToSocketMap[data.otherPlayerId];
