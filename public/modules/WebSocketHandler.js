@@ -34,6 +34,8 @@ export class WebSocketHandler {
         this.socket.on("updateGameSession", (gameSession) => {
             this.controller.gameSession = gameSession;
             // TODO update list
+            // TODO iterate over players, update scores etc.
+
         });
 
         this.socket.on("updatePlayer", (player) => {

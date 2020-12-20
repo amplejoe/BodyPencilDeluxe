@@ -47,6 +47,7 @@ export class RTCPeer {
                 if (!videoElement.srcObject) {
                     videoElement.srcObject = stream;
                     videoElement.play();
+                    $(videoElement).parent().playerId = this.otherPlayerId; // very nice workaround
                     break;
                 }
             }
