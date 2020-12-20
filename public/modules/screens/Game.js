@@ -3,31 +3,65 @@ import {globals} from '../globals.js'
 import {SpeechRecognizer} from "../SpeechRecognizer.js";
 import {BodyParts} from "../PoseDetector.js";
 
+const ROUND_STATES = {
+    "TASK_INPUT": 1,
+    "DRAWING": 2,
+    "RATING": 3,
+    "FINISHED": 4
+}
 export class Game {
     constructor(poseDetector) {
         // init
-        this.state = "game-drawer";
-        this.poseDetector = poseDetector;
-        this.isDrawing = false;
+        // this.player = player;
+        this.state = ROUND_STATES.TASK_INPUT;
 
-        // speech
-        this.speechRecognizer = new SpeechRecognizer(this);
-        this.speechRecognizer.startRecognition();
-        this.canvas = new Canvas();
-        $('#pointer').show(); // show pointer
+        this.canvas = null;
+        this.canvasLeft = null;
+        this.canvasRight = null;
 
-        // pose detection
-        // TODO start the loop based on game logic (and start command)
-        this.startPoseDetection();
-        this.startDrawing();
+        if (controller.player.currentRole === "drawer") {
 
-        // TODO remove!  (just for testing)
-        setTimeout(() => {
-            this.poseDetector.stopDetectionLoop();
-            this.speechRecognizer.stopRecognition();
-        }, 60000);
+            document.querySelector("#game-viewer").className = "hidden";
+            document.querySelector("#game-drawer").className = "flex-centered";
 
-        this.showUserInfo();
+            this.poseDetector = poseDetector;
+            this.isDrawing = false;
+
+            console.log("The player");
+            console.log(controller.player);
+
+            // speech
+            this.speechRecognizer = new SpeechRecognizer(this);
+            this.speechRecognizer.startRecognition();
+            this.canvas = new Canvas("canvas");
+            $('#pointer').show(); // show pointer
+
+            // pose detection
+            // TODO start the loop based on game logic (and start command)
+            this.startPoseDetection();
+            this.startDrawing();
+
+            // TODO remove!  (just for testing)
+            setTimeout(() => {
+                this.poseDetector.stopDetectionLoop();
+                this.speechRecognizer.stopRecognition();
+            }, 60000);
+
+            this.showUserInfo();
+
+        } else if (controller.player.currentRole === "viewer") {
+            document.querySelector("#game-viewer").className = "hidden";
+            document.querySelector("#game-drawer").className = "flex-centered";
+
+            this.canvasLeft = new Canvas("canvas-left");
+            this.canvasRight = new Canvas("canvas-right");
+
+        } else {
+            TransformStream.error("No role defined for player!");
+        }
+
+
+
 
         console.log("Game initialized.");
     }
@@ -44,6 +78,12 @@ export class Game {
     pauseDrawing() {
         this.isDrawing = false;
         this.lastPosition = null;
+    }
+
+    confirmDrawTerm(){
+        let term = document.querySelector("#term-input").value;
+        console.log(term);
+        // TODO: state transition: drawing/viewing
     }
 
     retry() {
@@ -65,10 +105,18 @@ export class Game {
             }
             this.canvas.movePointer(position);
             this.lastPosition = position;
+
+            for (let rtcPeer of Object.values(controller.rtcPeers)) {
+                rtcPeer.sendPosition(position);
+            }
         });
     }
 
     getState() {
         return this.state;
+    }
+
+    getRole() {
+        return this.player.role;
     }
 }

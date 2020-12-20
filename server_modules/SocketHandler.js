@@ -122,8 +122,8 @@ class SocketHandler {
 
             // emit updateGameSession for all current player of the session
             for (let player of socket.gameSession.players) {
-                this.playerToSocketMap[player.uuid].emit("roundStarted", socket.gameSession);
                 this.playerToSocketMap[player.uuid].emit("updatePlayer", player);
+                this.playerToSocketMap[player.uuid].emit("roundStarted", socket.gameSession);
             }
             this.broadcastJoinableSessions();
         });

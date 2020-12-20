@@ -1,5 +1,3 @@
-import {Canvas} from "./components/Canvas";
-
 export class RTCPeer {
 
     constructor(initiator, otherPlayer) {
