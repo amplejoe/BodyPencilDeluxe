@@ -14,9 +14,9 @@ export class Title {
         );
         // TODO: remove TMP, dummy population
         const sessions = [
-            {sessionName: "session 1", players: [1,2]},
+            {sessionName: "session 1", players: [1, 2]},
             {sessionName: "session 2", players: [1]},
-            {sessionName: "session 3", players: [1,3]}
+            {sessionName: "session 3", players: [1, 3]}
         ]
         this.populateSessionsList(sessions);
 
@@ -30,22 +30,6 @@ export class Title {
         // });
     }
 
-    // TODO preliminary function for testing, not sure if this is the right place
-    joinGameSession(sessionName) {
-        // webRTC negotiation: every time a client joins,
-        //  it gets a list of all previous clients and sends an webrtc offer to each
-        controller.websocketHandler.joinGameSession(sessionName, (result) => {
-            if (result.err) {
-                console.log(result.err);
-            } else {
-                // send one offer per player; server forwards each offer to the corresponding co-player
-                for (const otherPlayer of result.currentPlayerList) {
-                    controller.rtcPeers[otherPlayer.uuid] = new RTCPeer(true, otherPlayer);
-                }
-            }
-        })
-    }
-
     enableInputs(value) {
         // enable inputs
         document.querySelector("#nicknameInput").disabled = !value;
@@ -55,14 +39,12 @@ export class Title {
             document.querySelector("#create-button").disabled = true;
             // TODO: this depends on sessions being available
             document.querySelector("#join-button").disabled = true;
-        }
-        else {
+        } else {
             document.querySelector("#create-button").disabled = !value;
             // TODO: this depends on sessions being available
             if (selectedSession) {
                 document.querySelector("#join-button").disabled = !value;
-            }
-            else {
+            } else {
                 document.querySelector("#join-button").disabled = true;
             }
         }
@@ -113,7 +95,7 @@ export class Title {
                 this.changeState("title-lobby");
                 this.showPlayerCams();
             }
-            );
+        );
         // TODO: remove
         this.changeState("title-lobby");
         this.showPlayerCams();
@@ -124,16 +106,27 @@ export class Title {
         console.log(selectedSession)
         this.webSocketHandler.joinGameSession(
             selectedSession,
-            (data) => {
-                this.changeState("title-lobby");
-                this.showPlayerCams();
-
+            (result) => {
+                // webRTC negotiation: every time a client joins,
+                //  it gets a list of all previous clients and sends an webrtc offer to each
+                if (result.err) {
+                    console.log(result.err);
+                    toastr.error(result.err);
+                } else {
+                    // send one offer per player; server forwards each offer to the corresponding co-player
+                    for (const otherPlayer of result.currentPlayerList) {
+                        // if (otherPlayer.uuid !== controller.player.uuid) {   // TODO enable when player is set properly
+                        controller.rtcPeers[otherPlayer.uuid] = new RTCPeer(true, otherPlayer);
+                        // }
+                    }
+                    this.changeState("title-lobby");
+                    this.showPlayerCams();
+                }
             }
         );
         // TODO: remove
         this.changeState("title-lobby");
         this.showPlayerCams();
-
     }
 
 }

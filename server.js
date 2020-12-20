@@ -3,11 +3,16 @@ let cors = require('cors')
 const app = express();
 app.use(cors()); // allow all origins -> Access-Control-Allow-Origin: *
 const http = require('http').createServer(app);
-const gameServer = require('./modules/GameServer');
+const gameServer = require('./server_modules/GameServer');
 
 gameServer.start(http);
 
-const port = 3001;
+var hostFolder = "public";
+var port = 3000;
+
+// host public folder
+app.use(express.static(hostFolder));
+
 http.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });

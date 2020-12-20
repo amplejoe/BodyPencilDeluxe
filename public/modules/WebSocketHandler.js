@@ -45,7 +45,7 @@ export class WebSocketHandler {
         });
 
         this.socket.on("signalRTC", (data) => {
-            console.log(data);
+            // console.log(data);
             // get corresponding rtcPeer based on data.player
             // if this is the first signal, it does not exist yet and needs to be created
             let rtcPeer = controller.rtcPeers[data.player.uuid];

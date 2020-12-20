@@ -1,6 +1,6 @@
 var globals = {};
 
-globals.websocketURL = "localhost:3001";
+globals.websocketURL = "localhost:3000";
 
 globals.selectedColor = "black";
 globals.selectedLineWidth = 5;

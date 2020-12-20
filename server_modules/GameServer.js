@@ -27,4 +27,4 @@ var getInstance = function () {
     return instance;
 }
 
-module.exports = getInstance(); // singleton object, same for all modules
+module.exports = getInstance(); // singleton object, same for all server_modules
