@@ -5,7 +5,7 @@ export class RTCPeer {
 
         this.peer = new SimplePeer({
             initiator: initiator,
-            trickle: false,  // much faster with trickling
+            trickle: true,  // much faster with trickling
         });
         this.initEvents();
 
