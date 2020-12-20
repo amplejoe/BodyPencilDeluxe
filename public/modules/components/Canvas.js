@@ -1,6 +1,6 @@
 export class Canvas {
     constructor() {
-        this.canvas = document.querySelector('canvas');
+        this.canvas = document.querySelector('#canvas');
         this.pointer = document.querySelector('#pointer');
         this.ctx = this.canvas.getContext('2d');
         this.fitToContainer();

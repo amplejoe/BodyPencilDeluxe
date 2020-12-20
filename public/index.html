@@ -116,11 +116,21 @@
 
         <!-- GAME -->
         <div id="game" class="hidden">
-            <div id="camWrapper" class="flex-centered">
-                <video id="webcamVideo" width="640" height="480" autoplay></video>
+            <div id="game-viewer" class="hidden">
+                <div id="canvasWrapperLeft">
+                    <canvas id="canvas-left"></canvas>
+                </div>
+                <div id="canvasWrapperRight">
+                    <canvas id="canvas-right"></canvas>
+                </div>
             </div>
-            <div id="canvasWrapper">
-                <canvas id="canvas"></canvas>
+            <div id="game-drawer" class="flex-centered">
+                <div id="camWrapper" >
+                    <video id="webcamVideo" width="640" height="480" autoplay></video>
+                </div>
+                <div id="canvasWrapper">
+                    <canvas id="canvas"></canvas>
+                </div>
             </div>
         </div>
 

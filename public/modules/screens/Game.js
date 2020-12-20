@@ -6,6 +6,7 @@ import {BodyParts} from "../PoseDetector.js";
 export class Game {
     constructor(poseDetector) {
         // init
+        this.state = "game-drawer";
         this.poseDetector = poseDetector;
         this.isDrawing = false;
 
@@ -65,5 +66,9 @@ export class Game {
             this.canvas.movePointer(position);
             this.lastPosition = position;
         });
+    }
+
+    getState() {
+        return this.state;
     }
 }
