@@ -3,19 +3,19 @@ export class RTCPeer {
     constructor(initiator, otherPlayer) {
         this.otherPlayer = otherPlayer;
 
+        this.peer = new SimplePeer({
+            initiator: initiator,
+            trickle: true,  // much faster with trickling
+        });
+        this.initEvents();
+
         const constraints = {
             video: true,
-            audio: false, // TODO set to true
+            audio: true
         };
-
-        // navigator.mediaDevices.getUserMedia(constraints).then(stream => {
-            this.peer = new SimplePeer({
-                initiator: initiator,
-                trickle: true,  // much faster with trickling
-                // stream: stream
-            });
-            this.initEvents();
-        // });
+        navigator.mediaDevices.getUserMedia(constraints).then(stream => {
+            this.peer.addStream(stream);
+        });
     }
 
     initEvents() {

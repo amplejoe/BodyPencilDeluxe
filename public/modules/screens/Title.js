@@ -81,7 +81,7 @@ export class Title {
     }
 
     showPlayerCams() {
-        document.querySelector("#player-cams-wrapper").className = "flex-centered";
+        document.querySelector("#player-cams-wrapper").className = "flex-centered-evenly";
     }
 
     createGameSession() {
