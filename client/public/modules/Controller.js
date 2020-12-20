@@ -8,11 +8,9 @@ import {WebSocketHandler} from "./WebSocketHandler.js";
 export class Controller {
     constructor() {
 
-        this.initWebsocketHandler().then(
-            () => {
-                this.activeScreen = new Title(this.websocketHandler);
-            }
-        );
+        this.activeScreen = null;
+
+        this.isWebsocketInitialized = false;
 
         this.poseDetector = null;
         this.isPosDetectorInitialized = false;
@@ -29,11 +27,47 @@ export class Controller {
         });
     }
 
-    init() {
-        this.populateBodyPartList();
+    tryInitUserInput() {
+        if (this.isWebsocketInitialized && this.isPosDetectorInitialized) {
+            this.activeScreen.enableInputs(true);
+            // toastr["success"]("Initialization complete!");
+        }
+    }
 
+    init() {
+
+        // websocket
+        this.initWebsocketHandler().then(
+            () => {
+                this.isWebsocketInitialized = true;
+                this.activeScreen = new Title(this.websocketHandler);
+                document.querySelector("#websock-info").style.backgroundColor = "green";
+                document.querySelector("#websock-loading").innerHTML =
+                `
+                    <i class="fas fa-thumbs-up"></i>
+                `;
+                this.tryInitUserInput();
+            }
+        );
+
+        // posenet
         this.setNetUrlParam() // choose between ["resnet", "mobilenet"]
-        this.initPosenet();
+        this.initPosenet().then(
+            () => {
+                this.isPosDetectorInitialized = true;
+                document.querySelector("#start-button").disabled = false;
+                document.querySelector("#posenet-info").style.backgroundColor = "green";
+
+                document.querySelector("#posenet-loading").innerHTML =
+                `
+                    <i class="fas fa-thumbs-up"></i>
+                `;
+                this.tryInitUserInput();
+            }
+        );
+
+        // TODO: remove body part selection list
+        this.populateBodyPartList();
 
         console.log("Controller initialized.")
     }
@@ -70,27 +104,16 @@ export class Controller {
     }
 
 
-    initPosenet() {
-        console.log();
+    async initPosenet() {
+        return new Promise ( (res, rej) => {
+            let useResNet = globals.findGetParameter("net") === "resnet" ? true : false;
 
-        let useResNet = globals.findGetParameter("net") === "resnet" ? true : false;
+            console.log("Using Resnet: " + useResNet);
 
-        console.log("Using Resnet: " + useResNet);
+            this.poseDetector = new PoseDetector($("#webcamVideo")[0], 0.3, 11);
 
-        this.poseDetector = new PoseDetector($("#webcamVideo")[0], 0.3, 11);
-
-        this.poseDetector.init(useResNet).then(() => {
-            this.isPosDetectorInitialized = true;
-            document.querySelector("#start-button").disabled = false;
-            document.querySelector("#posenet-info").style.backgroundColor = "green";
-
-            document.querySelector("#posenet-loading").innerHTML =
-            `
-                <i class="fas fa-thumbs-up"></i>
-            `;
-
-
-            toastr["success"]("Ready to start!");
+            this.poseDetector.init(useResNet).then(
+                () => { res(); });
         });
     }
 
