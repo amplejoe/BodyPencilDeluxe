@@ -56,6 +56,10 @@
             <select id="bodyPartSelect" name="bodyParts" onchange="controller.activeScreen.startPoseDetection()">
             </select>
         </div>
+        <!-- TEMP START -->
+        <div class="menu-col">
+            <button id="temp-start-button" onclick="controller.switchScreen('game')"><i class="fas fa-paint-brush"></i></button>
+        </div>
         <!-- FPS display -->
         <div id="game-info" class="hidden">
             <div id="draw-status" class="menu-col">
@@ -93,7 +97,20 @@
                 </div>
             </div>
             <div id="title-lobby" class="hidden">
-                <button id="start-button" onclick="controller.switchScreen('game')" disabled>Start</button>
+                <!-- <div id="waiting-players" class="flex-centered-evenly">
+                    <div class="player-waiting">
+                        <i class="fas fa-stroopwafel fa-spin fa-4x"></i>
+                    </div>
+                    <div class="player-waiting">
+                        <i class="fas fa-stroopwafel fa-spin fa-4x"></i>
+                    </div>
+                    <div class="player-waiting">
+                        <i class="fas fa-stroopwafel fa-spin fa-4x"></i>
+                    </div>
+                </div> -->
+                <div style="width: 100%; text-align: center;" class="flex-centered-evenly">
+                    <button id="start-button" onclick="controller.switchScreen('game')" disabled>Start</button>
+                </div>
             </div>
         </div>
 
@@ -119,22 +136,22 @@
         <div id="player-cams-wrapper" class="hidden">
             <div id="player-0" class="player-display flex-centered-col">
                 <div class="flex-centered">
-                    <span class="player-name">Player</span>
-                    <span class="player-score">0</span>
+                    <span class="player-name">Waiting for player...</span>
+                    <span class="player-score hidden">0</span>
                 </div>
                 <video class="player-video" width="320" height="240" autoplay></video>
             </div>
             <div id="player-1" class="player-display flex-centered-col">
                 <div class="flex-centered">
-                    <span class="player-name">Player</span>
-                    <span class="player-score">0</span>
+                    <span class="player-name">Waiting for player...</span>
+                    <span class="player-score hidden">0</span>
                 </div>
                 <video class="player-video" width="320" height="240" autoplay></video>
             </div>
             <div id="player-2" class="player-display flex-centered-col">
                 <div class="flex-centered">
-                    <span class="player-name">Player</span>
-                    <span class="player-score">0</span>
+                    <span class="player-name">Waiting for player...</span>
+                    <span class="player-score hidden">0</span>
                 </div>
                 <video id="player-video" width="320" height="240" autoplay></video>
             </div>

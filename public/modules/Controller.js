@@ -60,7 +60,7 @@ export class Controller {
         this.initPosenet().then(
             () => {
                 this.isPosDetectorInitialized = true;
-                document.querySelector("#start-button").disabled = false;
+                
                 document.querySelector("#posenet-info").style.backgroundColor = "green";
 
                 document.querySelector("#posenet-loading").innerHTML =

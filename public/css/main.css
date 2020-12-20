@@ -1,7 +1,7 @@
 /* LAYOUT */
 
 #heading {
-    min-height: 15vh;
+    min-height: 10vh;
     border: 1px solid green;
 }
 
@@ -11,13 +11,13 @@
     align-items: center;
     justify-content: center; */
 
-    min-height: 10vh;
+    min-height: 5vh;
     border: 1px solid green;
 }
 
 #content {
     padding: 10px;
-    min-height: 55vh;
+    min-height: 52vh;
     border: 1px solid green;
     overflow: hidden;
 }
@@ -87,6 +87,11 @@
     /* flex-wrap: wrap; */
 }
 
+.flex-centered-col > * {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
 .flipped {
     transform: scaleX(-1);
 }
@@ -94,7 +99,6 @@
 .hidden {
     display: none;
 }
-
 
 
 

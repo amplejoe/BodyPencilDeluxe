@@ -24,6 +24,10 @@ export class Title {
         // });
     }
 
+    getState() {
+        return this.state;
+    }
+
     enableInputs(value) {
         // enable inputs
         document.querySelector("#nicknameInput").disabled = !value;
@@ -43,6 +47,24 @@ export class Title {
             }
         }
         document.querySelector("#session-list").disabled = !value;
+
+    }
+
+    enableGameStart() {
+        document.querySelector("#start-button").disabled = false;
+    }
+
+    setPlayerNames(players) {
+        // let playersWaiting = document.querySelectorAll(".player-waiting");
+        let playerCamNames = document.querySelectorAll(".player-name");
+        for (let i = 0; i < players.length; i++) {
+            // playersWaiting[i].innerHTML = players[i].nickname;
+            playerCamNames[i].innerHTML = players[i].nickname;
+        }
+        // TODO: should check be done here?
+        if (players.length === 3) {
+            this.enableGameStart();
+        }
 
     }
 

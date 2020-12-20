@@ -35,11 +35,21 @@ export class WebSocketHandler {
             this.controller.gameSession = gameSession;
             // TODO update list
             // TODO iterate over players, update scores etc.
+            console.log(gameSession);
+            console.log(this.controller.activeScreen.getState());
+
+            // title state
+            if (this.controller.activeScreen.getState() === "title-init" ||
+                this.controller.activeScreen.getState() === "title-lobby") {
+               this.controller.activeScreen.setPlayerNames(gameSession.players);
+            }
 
         });
 
         this.socket.on("updatePlayer", (player) => {
             this.controller.player = player;
+            // document.querySelectorAll(".player-waiting")[0].innerHTML = player.nickname;
+            document.querySelectorAll(".player-name")[0].innerHTML = player.nickname;
             console.log(player);
         });
 

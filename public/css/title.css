@@ -1,4 +1,5 @@
 #start-button {
+    margin-top: 120px;
     padding: 15px 32px;
     font-size: 16px;
 }
@@ -7,6 +8,33 @@
     width: 500px;
 }
 
+#title-init {
+    width: 100%;
+}
+
 #title-init > * {
     margin: 10px;
 }
+
+#title-lobby {
+    width: 100%;
+}
+
+#waiting-players {
+    margin-top: 50px;
+    width: 100%;
+}
+
+.player-waiting {
+
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.player-name {
+
+    font-weight: bold;
+    font-size: 20px;
+}
+
+
