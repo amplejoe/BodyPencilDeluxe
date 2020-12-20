@@ -37,6 +37,8 @@ export class Game {
             document.querySelector("#game-viewer").className = "flex-centered";
             document.querySelector("#game-drawer").className = "hidden";
 
+            $("#term-input-wrapper").show();
+
             this.canvasLeft = new Canvas("canvas-left");
             this.canvasRight = new Canvas("canvas-right");
 
@@ -108,7 +110,8 @@ export class Game {
             this.lastPosition = position;
 
             for (let rtcPeer of Object.values(controller.rtcPeers)) {
-                rtcPeer.sendPosition(position);
+                // rtcPeer.sendPosition(position);
+                rtcPeer.sendImage(this.canvas.toBase64());
             }
         });
     }

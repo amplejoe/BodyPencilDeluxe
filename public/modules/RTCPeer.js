@@ -1,8 +1,16 @@
 export class RTCPeer {
 
+    static count = 0;
+
     constructor(initiator, otherPlayer) {
         this.otherPlayerId = otherPlayer.uuid;
         this.connected = false;
+
+        if (RTCPeer.count++ === 0) {
+            this.canvasSide = "left";
+        } else {
+            this.canvasSide = "right";
+        }
 
         this.peer = new SimplePeer({
             initiator: initiator,
@@ -20,9 +28,15 @@ export class RTCPeer {
 
     }
 
-    sendPosition(position) {
+    // sendPosition(position) {
+    //     if (this.connected) {
+    //         this.peer.send(JSON.stringify(position));
+    //     }
+    // }
+
+    sendImage(base64Image) {
         if (this.connected) {
-            this.peer.send(JSON.stringify(position));
+            this.peer.send(base64Image);
         }
     }
 
@@ -40,12 +54,17 @@ export class RTCPeer {
             this.connected = true;
         })
 
-        this.peer.on('data', data => {
-            const position = JSON.parse(data);
+        this.peer.on('data', base64image => {
+            // const position = JSON.parse(data);
             // console.log(position);
-            // TODO handle the received data
-            //  draw to canvas?
 
+            if (controller.player.currentRole === "viewer") {
+                if (this.canvasSide === "left") {
+                    controller.activeScreen.canvasLeft.fromBase64(base64image);
+                } else {
+                    controller.activeScreen.canvasRight.fromBase64(base64image);
+                }
+            }
         })
 
         this.peer.on('stream', stream => {

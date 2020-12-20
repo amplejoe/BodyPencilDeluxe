@@ -20,7 +20,7 @@
     overflow: hidden;
 }
 
-#canvasWrapper {
+#canvasWrapper, #canvasWrapperLeft, #canvasWrapperRight  {
     width: 640px;
     height: 480px;
     border-radius: 5px;

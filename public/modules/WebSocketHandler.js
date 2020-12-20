@@ -119,6 +119,7 @@ export class WebSocketHandler {
 
     sendDrawTerm(term) {
         this.socket.emit("startDrawing", term);
+        $("#term-input-wrapper").hide();
     }
 
     sendRtcSignal(signalData, otherPlayerId) {
