@@ -2,7 +2,7 @@ import {RTCPeer} from "./RTCPeer.js";
 
 export class WebSocketHandler {
 
-    constructor(controller, url) {
+    constructor(controller, url, resolve) {
 
         this.controller = controller;
 
@@ -10,12 +10,22 @@ export class WebSocketHandler {
         this.socket = io(url);
         this.socket.connect();
 
-        this.initEventListeners();
+        this.initEventListeners(resolve);
+
+        // TODO: TMP remove and resolve on socket connect
+        console.log("TMP: Websockethandler resolving after 2000ms...");
+        setTimeout(
+            () => {
+                console.log("... Websockethandler connected!");
+                resolve();
+            }, 2000
+        );
     }
 
-    initEventListeners() {
+    initEventListeners(resolve) {
         this.socket.on("connect", () => {
             console.log("websocket connected!");
+            resolve();
         });
 
         this.socket.on("disconnect", () => {

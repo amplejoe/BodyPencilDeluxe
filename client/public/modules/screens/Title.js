@@ -1,7 +1,8 @@
 import {RTCPeer} from "../RTCPeer.js";
 
 export class Title {
-    constructor() {
+    constructor(webSocketHandler) {
+        this.webSocketHandler = webSocketHandler;
 
         console.log("Title initialized.");
 
@@ -25,5 +26,4 @@ export class Title {
             }
         })
     }
-
 }
