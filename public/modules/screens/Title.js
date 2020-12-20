@@ -9,16 +9,10 @@ export class Title {
         this.webSocketHandler = webSocketHandler;
         this.webSocketHandler.getAllJoinableSessions(
             (data) => {
+                console.log(data);
                 this.populateSessionsList(data);
             }
         );
-        // TODO: remove TMP, dummy population
-        const sessions = [
-            {sessionName: "session 1", players: [1, 2]},
-            {sessionName: "session 2", players: [1]},
-            {sessionName: "session 3", players: [1, 3]}
-        ]
-        this.populateSessionsList(sessions);
 
         // nickname
         document.querySelector("#nicknameInput").value = localStorage.getItem('nickName');
@@ -55,7 +49,7 @@ export class Title {
     setNickName() {
         let currentNick = document.querySelector("#nicknameInput").value;
         localStorage.setItem('nickName', currentNick);
-        console.log(localStorage.getItem('nickName'));
+        // console.log(localStorage.getItem('nickName'));
         this.enableInputs(true);
     }
 
@@ -63,6 +57,7 @@ export class Title {
         let select = document.getElementById("session-list");
         let options = sessions;
 
+        $(select).empty();
         for (let i = 0; i < options.length; i++) {
             let opt = options[i];
             let el = document.createElement("option");
@@ -89,19 +84,18 @@ export class Title {
         document.querySelector("#player-cams-wrapper").className = "flex-centered";
     }
 
-    createSession() {
-        this.webSocketHandler.createSession(
+    createGameSession() {
+        this.webSocketHandler.createGameSession(
             (data) => {
+                console.log("created session " + data.sessionName);
+                // TODO display sessionName
                 this.changeState("title-lobby");
                 this.showPlayerCams();
             }
         );
-        // TODO: remove
-        this.changeState("title-lobby");
-        this.showPlayerCams();
     }
 
-    joinSession() {
+    joinGameSession() {
         let selectedSession = document.querySelector("#session-list").value;
         console.log(selectedSession)
         this.webSocketHandler.joinGameSession(
@@ -115,18 +109,15 @@ export class Title {
                 } else {
                     // send one offer per player; server forwards each offer to the corresponding co-player
                     for (const otherPlayer of result.currentPlayerList) {
-                        // if (otherPlayer.uuid !== controller.player.uuid) {   // TODO enable when player is set properly
-                        controller.rtcPeers[otherPlayer.uuid] = new RTCPeer(true, otherPlayer);
-                        // }
+                        if (otherPlayer.uuid !== controller.player.uuid) {
+                            controller.rtcPeers[otherPlayer.uuid] = new RTCPeer(true, otherPlayer);
+                        }
                     }
                     this.changeState("title-lobby");
                     this.showPlayerCams();
                 }
             }
         );
-        // TODO: remove
-        this.changeState("title-lobby");
-        this.showPlayerCams();
     }
 
 }

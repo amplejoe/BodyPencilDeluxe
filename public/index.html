@@ -84,8 +84,8 @@
                 <div>
                     <label for="nickName">Nick:</label>
                     <input type="text" id="nicknameInput" name="nickName" oninput="controller.activeScreen.setNickName()" maxlength = "15" disabled>
-                    <button id="create-button" onclick="controller.activeScreen.createSession()" disabled>Create</button>
-                    <button id="join-button" onclick="controller.activeScreen.joinSession()" disabled>Join</button>
+                    <button id="create-button" onclick="controller.activeScreen.createGameSession()" disabled>Create</button>
+                    <button id="join-button" onclick="controller.activeScreen.joinGameSession()" disabled>Join</button>
                 </div>
                 <div>
                     <select id="session-list" name="sessions" size="15" onchange="controller.tryInitUserInput()" disabled>

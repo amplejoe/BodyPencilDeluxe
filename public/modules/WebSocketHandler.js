@@ -12,14 +12,6 @@ export class WebSocketHandler {
 
         this.initEventListeners(resolve);
 
-        // TODO: TMP remove and resolve on socket connect
-        console.log("TMP: Websockethandler resolving after 2000ms...");
-        setTimeout(
-            () => {
-                console.log("... Websockethandler connected!");
-                resolve();
-            }, 2000
-        );
     }
 
     initEventListeners(resolve) {
@@ -32,16 +24,21 @@ export class WebSocketHandler {
             console.log("websocket disconnected!");
         });
 
-        this.socket.on("updateJoinableSessionList", (sessions) => {
-            // TODO update list
+        this.socket.on("updateJoinableSessionList", (data) => {
+            if (!this.controller.gameSession
+                && controller.activeScreen.populateSessionsList) {
+                controller.activeScreen.populateSessionsList(data);
+            }
         });
 
         this.socket.on("updateGameSession", (gameSession) => {
             this.controller.gameSession = gameSession;
+            // TODO update list
         });
 
         this.socket.on("updatePlayer", (player) => {
             this.controller.player = player;
+            console.log(player);
         });
 
         this.socket.on("signalRTC", (data) => {
@@ -65,7 +62,6 @@ export class WebSocketHandler {
 
     // callback(sessionName)
     createGameSession(callback) {
-        // TODO create a input #nicknameInput
         this.socket.emit("newSession", {nickname: $("#nicknameInput").val()}, callback);
     }
 

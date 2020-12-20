@@ -8,14 +8,14 @@ export class RTCPeer {
             audio: false, // TODO set to true
         };
 
-        navigator.mediaDevices.getUserMedia(constraints).then(stream => {
+        // navigator.mediaDevices.getUserMedia(constraints).then(stream => {
             this.peer = new SimplePeer({
                 initiator: initiator,
                 trickle: true,  // much faster with trickling
-                stream: stream
+                // stream: stream
             });
             this.initEvents();
-        });
+        // });
     }
 
     initEvents() {
