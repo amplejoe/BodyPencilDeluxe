@@ -1,7 +1,10 @@
+import {Canvas} from "./components/Canvas";
+
 export class RTCPeer {
 
     constructor(initiator, otherPlayer) {
         this.otherPlayerId = otherPlayer.uuid;
+        this.connected = false;
 
         this.peer = new SimplePeer({
             initiator: initiator,
@@ -16,6 +19,13 @@ export class RTCPeer {
         navigator.mediaDevices.getUserMedia(constraints).then(stream => {
             this.peer.addStream(stream);
         });
+
+    }
+
+    sendPosition(position) {
+        if (this.connected) {
+            this.peer.send(JSON.stringify(position));
+        }
     }
 
     initEvents() {
@@ -29,11 +39,15 @@ export class RTCPeer {
 
         this.peer.on('connect', () => {
             console.log('webrtc connected!');
+            this.connected = true;
         })
 
         this.peer.on('data', data => {
-            console.log('data: ' + data)
-            // TODO handle the received data (drawing positions, canvas, whatever)
+            const position = JSON.parse(data);
+            console.log(position);
+            // TODO handle the received data
+            //  draw to canvas?
+
         })
 
         this.peer.on('stream', stream => {
