@@ -20,7 +20,7 @@ export class RTCPeer {
 
         const constraints = {
             video: true,
-            audio: false // TODO re-enable audio for demo
+            audio: true
         };
         navigator.mediaDevices.getUserMedia(constraints).then(stream => {
             this.peer.addStream(stream);

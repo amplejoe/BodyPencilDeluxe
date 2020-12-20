@@ -53,16 +53,16 @@
     </div>
     <!-- BodyPart selector -->
     <div id="bodyPartSelectWrapper" class="menu-col">
-        <select id="bodyPartSelect" name="bodyParts" onchange="controller.activeScreen.startPoseDetection()">
+        <select id="bodyPartSelect" name="bodyParts" disabled onchange="controller.activeScreen.startPoseDetection()">
         </select>
     </div>
     <!-- TEMP START -->
-    <div class="menu-col">
-        <button id="temp-start-button" onclick="controller.switchScreen('game')"><i class="fas fa-paint-brush"></i>
-        </button>
-    </div>
+<!--    <div class="menu-col">-->
+<!--        <button id="temp-start-button" onclick="controller.switchScreen('game')"><i class="fas fa-paint-brush"></i>-->
+<!--        </button>-->
+<!--    </div>-->
     <h1 id="drawTerm"></h1>
-    <div id="timer"></div>
+    <h2 id="timer"></h2>
     <!-- FPS display -->
     <div id="game-info" class="hidden">
         <div id="draw-status" class="menu-col">
@@ -75,11 +75,11 @@
             color
         </div>
         <div id="fps" class="menu-col">FPS: None</div>
-        <div class="menu-col">
-            <button id="retry-button" onclick="controller.activeScreen.retry()">
-                <i class="fas fa-redo-alt"></i>
-            </button>
-        </div>
+<!--        <div class="menu-col">-->
+<!--            <button id="retry-button" onclick="controller.activeScreen.retry()">-->
+<!--                <i class="fas fa-redo-alt"></i>-->
+<!--            </button>-->
+<!--        </div>-->
     </div>
 </div>
 
@@ -116,10 +116,10 @@
                 <input type="text" id="term-input">
                 <button id="term-confirm" onclick="controller.activeScreen.confirmDrawTerm();">Start</button>
             </div>
-            <div id="canvasWrapperLeft">
+            <div id="canvasWrapperLeft" onclick="controller.activeScreen.leftCanvasClicked();">
                 <canvas id="canvas-left"></canvas>
             </div>
-            <div id="canvasWrapperRight">
+            <div id="canvasWrapperRight" onclick="controller.activeScreen.rightCanvasClicked();">
                 <canvas id="canvas-right"></canvas>
             </div>
         </div>

@@ -137,7 +137,7 @@ class SocketHandler {
                 this.playerToSocketMap[player.uuid].emit("confirmStartDrawing");
             }
 
-            let time = 10; // shorter for testing     59; // diversifier: less than one minute per round
+            let time = 59; // diversifier: less than one minute per round
             let interval = setInterval(() => {
                 time--;
                 for (let player of socket.gameSession.players) {

@@ -28,6 +28,8 @@ export class Game {
             this.poseDetector = poseDetector;
             this.isDrawing = false;
 
+            $("#bodyPartSelect").val(controller.player.bodyPart);
+
             console.log("The player");
             console.log(controller.player);
 
@@ -52,6 +54,9 @@ export class Game {
     }
 
     startDrawing() {
+
+        toastr.info("Draw using your: " + $("#bodyPartSelect").val());
+
         // speech
         this.speechRecognizer = new SpeechRecognizer(this);
         this.speechRecognizer.startRecognition();
@@ -118,6 +123,37 @@ export class Game {
 
     getState() {
         return this.state;
+    }
+
+    leftCanvasClicked() {
+        if (this.state === ROUND_STATES.RATING) {
+            const playerId = Object.values(controller.rtcPeers).filter(peer => peer.canvasSide === "left").map(peer => peer.otherPlayerId)[0];
+            controller.websocketHandler.sendRating(playerId);
+
+            console.log(playerId + " gets a point");
+            // TODO find the nick of this player
+            toastr.success(playerId + " gets a point");
+            toastr.success("Next round will start in 10 seconds");
+            setTimeout(() => {
+                controller.websocketHandler.startRound();
+            }, 10000);
+
+        }
+    }
+
+    rightCanvasClicked() {
+        if (this.state === ROUND_STATES.RATING) {
+            const playerId = Object.values(controller.rtcPeers).filter(peer => peer.canvasSide === "right").map(peer => peer.otherPlayerId)[0];
+            controller.websocketHandler.sendRating(playerId);
+
+            console.log(playerId + " gets a point");
+            // TODO find the nick of this player
+            toastr.success(playerId + " gets a point");
+            toastr.success("Next round will start in 10 seconds");
+            setTimeout(() => {
+                controller.websocketHandler.startRound();
+            }, 10000);
+        }
     }
 
 }

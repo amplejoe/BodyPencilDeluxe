@@ -48,7 +48,9 @@ export class WebSocketHandler {
                 $("#drawTerm").html(gameSession.drawTerm);
 
                 //  update scores
-
+                $(".player-score").show();
+                // gameSession.players
+                // TODO update scores (find correct slot)
             }
 
         });
@@ -72,7 +74,8 @@ export class WebSocketHandler {
             if (controller.player.currentRole === "drawer") {
                 controller.activeScreen.stopDrawing();
             } else {
-                //  TODO viewer: change to rating screen
+                controller.activeScreen.state = 3; // 3 == RATING
+                toastr.success("Click on the winner drawing");
             }
         });
 
@@ -120,6 +123,10 @@ export class WebSocketHandler {
     sendDrawTerm(term) {
         this.socket.emit("startDrawing", term);
         $("#term-input-wrapper").hide();
+    }
+
+    sendRating(playerId) {
+        this.socket.emit("sendRating", playerId);
     }
 
     sendRtcSignal(signalData, otherPlayerId) {
