@@ -4,7 +4,8 @@ class GameSession {
         "LOBBY": 0,
         "TASK_INPUT": 1,
         "DRAWING": 2,
-        "RATING": 3
+        "RATING": 3,
+        "FINISHED": 4
     }
 
     constructor(sessionName) {

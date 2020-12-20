@@ -14,7 +14,6 @@ class SocketHandler {
         });
 
         this.playerToSocketMap = {};  // auxiliary map from player uuid -> socket
-        // TODO keep this clean (i.e. upon disconnect)
 
         this.io.on('connection', this.playerConnected.bind(this));
     }
@@ -32,10 +31,6 @@ class SocketHandler {
 
         socket.on('getAllJoinableSessions', (data, callback) => {
             callback(Object.values(this.gameServer.gameSessions).filter(session => session.isJoinable()));
-            // TODO an alle sockets push benachrichtigung über joinable sessions wenn,
-            //      - startSession
-            //      - removeSession (gamemaster
-
         });
 
         socket.on('newSession', (data, callback) => {
@@ -65,13 +60,9 @@ class SocketHandler {
             player.nickname = data.nickname;
             socket.emit("updatePlayer", player);
 
-            // TODO check if session is still joinable (in LOBBY state)
-            // TODO  wenn 3 spieler (voll) -> nicht joinable
-            // TODO  extract method getJoinableSessions()
-            //             - LOBBY state, gamemaster vorhanden, weniger als 3 spieler
             const sessionName = data.sessionName;
             const gameSession = this.gameServer.gameSessions[sessionName];
-            if (gameSession) {
+            if (gameSession && gameSession.isJoinable()) {
                 gameSession.addPlayer(player);
                 socket.gameSession = gameSession;
                 console.log(gameSession.players);
@@ -107,13 +98,19 @@ class SocketHandler {
 
 
         socket.on('disconnect', () => {
-            // TODO handle disconnection
             const sessionName = (socket.gameSession) ? socket.gameSession.sessionName : null;
             console.log(`player disconnected: ${player.uuid}; session: ${sessionName}; gameMaster: ${player.gameMaster}`);
 
+            delete this.playerToSocketMap[player.uuid];
+
+            if (socket.gameSession) {
+                socket.gameSession.players = socket.gameSession.players.filter(p => p.uuid !== player.uuid);
+            }
+
             if (player.gameMaster) {
-                // TODO if player.gameMaster -> abort session -> disconnect all sockets of this session
-                //      -> session aus session liste löschen + push emit joinableSessions
+                //  if player.gameMaster -> abort session and delete from list
+                delete this.gameServer.gameSessions[socket.gameSession.sessionName];
+                this.broadcastJoinableSessions();
             }
 
         });
