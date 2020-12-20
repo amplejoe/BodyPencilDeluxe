@@ -120,7 +120,7 @@ export class SpeechRecognizer {
             this.game.pauseDrawing();
             document.getElementById("draw-status").style.backgroundColor = "gray";
         } else if (command === "go") {
-            this.game.startDrawing();
+            this.game.resumeDrawing();
             document.getElementById("draw-status").style.backgroundColor = "red";
             if (controller.activeScreen.canvas) {
               controller.activeScreen.canvas.drawBegin();
@@ -137,7 +137,7 @@ export class SpeechRecognizer {
         } else if (SpeechRecognizer.colors.includes(command)) {
             globals.selectedColor = command;
             document.getElementById("color-status").style.backgroundColor = command;
-            this.game.startDrawing();
+            this.game.resumeDrawing();
             document.getElementById("draw-status").style.backgroundColor = "red";
         } else {
             return false;

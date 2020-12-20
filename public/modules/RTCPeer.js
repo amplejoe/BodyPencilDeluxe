@@ -42,7 +42,7 @@ export class RTCPeer {
 
         this.peer.on('data', data => {
             const position = JSON.parse(data);
-            console.log(position);
+            // console.log(position);
             // TODO handle the received data
             //  draw to canvas?
 

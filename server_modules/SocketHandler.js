@@ -134,6 +134,7 @@ class SocketHandler {
 
             for (let player of socket.gameSession.players) {
                 this.playerToSocketMap[player.uuid].emit("updateGameSession", socket.gameSession);
+                this.playerToSocketMap[player.uuid].emit("confirmStartDrawing");
             }
 
             let time = 10; // shorter for testing     59; // diversifier: less than one minute per round

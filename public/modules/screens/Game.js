@@ -9,6 +9,7 @@ const ROUND_STATES = {
     "RATING": 3,
     "FINISHED": 4
 }
+
 export class Game {
     constructor(poseDetector) {
         // init
@@ -30,28 +31,11 @@ export class Game {
             console.log("The player");
             console.log(controller.player);
 
-            // speech
-            this.speechRecognizer = new SpeechRecognizer(this);
-            this.speechRecognizer.startRecognition();
-            this.canvas = new Canvas("canvas");
-            $('#pointer').show(); // show pointer
-
-            // pose detection
-            // TODO start the loop based on game logic (and start command)
-            this.startPoseDetection();
-            this.startDrawing();
-
-            // TODO remove!  (just for testing)
-            setTimeout(() => {
-                this.poseDetector.stopDetectionLoop();
-                this.speechRecognizer.stopRecognition();
-            }, 60000);
-
             this.showUserInfo();
 
         } else if (controller.player.currentRole === "viewer") {
-            document.querySelector("#game-viewer").className = "hidden";
-            document.querySelector("#game-drawer").className = "flex-centered";
+            document.querySelector("#game-viewer").className = "flex-centered";
+            document.querySelector("#game-drawer").className = "hidden";
 
             this.canvasLeft = new Canvas("canvas-left");
             this.canvasRight = new Canvas("canvas-right");
@@ -62,18 +46,27 @@ export class Game {
             toastr.error("No role defined for player!");
         }
 
-
-
-
         console.log("Game initialized.");
     }
 
-    showUserInfo() {
-        // document.getElementById("game-info").classList.remove("hidden");
-        document.getElementById("game-info").className = "flex-centered";
+    startDrawing() {
+        // speech
+        this.speechRecognizer = new SpeechRecognizer(this);
+        this.speechRecognizer.startRecognition();
+        this.canvas = new Canvas("canvas");
+        $('#pointer').show(); // show pointer
+
+        // pose detection
+        this.startPoseDetection();
+        this.isDrawing = true;
     }
 
-    startDrawing() {
+    stopDrawing() {
+        this.poseDetector.stopDetectionLoop();
+        this.speechRecognizer.stopRecognition();
+    }
+
+    resumeDrawing() {
         this.isDrawing = true;
     }
 
@@ -82,9 +75,15 @@ export class Game {
         this.lastPosition = null;
     }
 
-    confirmDrawTerm(){
+    showUserInfo() {
+        // document.getElementById("game-info").classList.remove("hidden");
+        document.getElementById("game-info").className = "flex-centered";
+    }
+
+    confirmDrawTerm() {
         let term = document.querySelector("#term-input").value;
-        console.log(term);
+        controller.websocketHandler.sendDrawTerm(term);
+
         // TODO: state transition: drawing/viewing
     }
 
@@ -118,7 +117,4 @@ export class Game {
         return this.state;
     }
 
-    getRole() {
-        return this.player.role;
-    }
 }

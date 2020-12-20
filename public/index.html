@@ -27,145 +27,151 @@
 </head>
 <body>
 
-    <div id="heading" class="flex-centered">
+<div id="heading" class="flex-centered">
 
-        <img src="./assets/img/Pencil.svg" alt="">
-        <h1>
-            Body Pencil De'Luxe
-        </h1>
-        <img class="flipped" src="./assets/img/Pencil.svg" alt="">
+    <img src="./assets/img/Pencil.svg" alt="">
+    <h1>
+        Body Pencil De'Luxe
+    </h1>
+    <img class="flipped" src="./assets/img/Pencil.svg" alt="">
+</div>
+
+<div id="info" class="flex-centered">
+    <!-- Websocket status indicator -->
+    <div id="websock-info" class="menu-col">
+        <span id="websock-text">websock</span>:&nbsp;
+        <span id="websock-loading">
+                <i class="fas fa-spinner fa-spin"></i>
+            </span>
     </div>
-
-    <div id="info" class="flex-centered">
-        <!-- Websocket status indicator -->
-        <div id="websock-info" class="menu-col">
-            <span id="websock-text">websock</span>:&nbsp;
-            <span id="websock-loading">
+    <!-- PoseNet status indicator -->
+    <div id="posenet-info" class="menu-col">
+        <span id="posenet-text"></span>
+        <span id="posenet-loading">
                 <i class="fas fa-spinner fa-spin"></i>
             </span>
+    </div>
+    <!-- BodyPart selector -->
+    <div id="bodyPartSelectWrapper" class="menu-col">
+        <select id="bodyPartSelect" name="bodyParts" onchange="controller.activeScreen.startPoseDetection()">
+        </select>
+    </div>
+    <!-- TEMP START -->
+    <div class="menu-col">
+        <button id="temp-start-button" onclick="controller.switchScreen('game')"><i class="fas fa-paint-brush"></i>
+        </button>
+    </div>
+    <h1 id="drawTerm"></h1>
+    <div id="timer"></div>
+    <!-- FPS display -->
+    <div id="game-info" class="hidden">
+        <div id="draw-status" class="menu-col">
+            <i class="fas fa-circle"></i>
         </div>
-        <!-- PoseNet status indicator -->
-        <div id="posenet-info" class="menu-col">
-            <span id="posenet-text"></span>
-            <span id="posenet-loading">
-                <i class="fas fa-spinner fa-spin"></i>
-            </span>
+        <div id="line-status" class="menu-col">
+            medium
         </div>
-        <!-- BodyPart selector -->
-        <div id="bodyPartSelectWrapper" class="menu-col">
-            <select id="bodyPartSelect" name="bodyParts" onchange="controller.activeScreen.startPoseDetection()">
-            </select>
+        <div id="color-status" class="menu-col">
+            color
         </div>
-        <!-- TEMP START -->
+        <div id="fps" class="menu-col">FPS: None</div>
         <div class="menu-col">
-            <button id="temp-start-button" onclick="controller.switchScreen('game')"><i class="fas fa-paint-brush"></i></button>
+            <button id="retry-button" onclick="controller.activeScreen.retry()">
+                <i class="fas fa-redo-alt"></i>
+            </button>
         </div>
-        <!-- FPS display -->
-        <div id="game-info" class="hidden">
-            <div id="draw-status" class="menu-col">
-                <i class="fas fa-circle"></i>
-            </div>
-            <div id="line-status" class="menu-col">
-                medium
-            </div>
-            <div id="color-status" class="menu-col">
-                color
-            </div>
-            <div id="fps" class="menu-col">FPS: None</div>
-            <div class="menu-col">
-                <button id="retry-button" onclick="controller.activeScreen.retry()">
-                    <i class="fas fa-redo-alt"></i>
+    </div>
+</div>
+
+<div id="content">
+
+    <!-- TITLE -->
+    <div id="title" class="flex-centered">
+        <div id="title-init" class="flex-centered-col">
+            <div>
+                <label for="nickName">Nick:</label>
+                <input type="text" id="nicknameInput" name="nickName" oninput="controller.activeScreen.setNickName()"
+                       maxlength="15" disabled>
+                <button id="create-button" onclick="controller.activeScreen.createGameSession()" disabled>Create
                 </button>
+                <button id="join-button" onclick="controller.activeScreen.joinGameSession()" disabled>Join</button>
+            </div>
+            <div>
+                <select id="session-list" name="sessions" size="15" onchange="controller.tryInitUserInput()" disabled>
+                </select>
+            </div>
+        </div>
+        <div id="title-lobby" class="hidden">
+            <div id="session-name-info">Session Name Here</div>
+            <div style="width: 100%; text-align: center;" class="flex-centered-evenly">
+                <button id="start-button" onclick="controller.websocketHandler.startRound()" disabled>Start</button>
             </div>
         </div>
     </div>
 
-    <div id="content">
-
-        <!-- TITLE -->
-        <div id="title" class="flex-centered">
-            <div id="title-init" class="flex-centered-col">
-                <div>
-                    <label for="nickName">Nick:</label>
-                    <input type="text" id="nicknameInput" name="nickName" oninput="controller.activeScreen.setNickName()" maxlength = "15" disabled>
-                    <button id="create-button" onclick="controller.activeScreen.createGameSession()" disabled>Create</button>
-                    <button id="join-button" onclick="controller.activeScreen.joinGameSession()" disabled>Join</button>
-                </div>
-                <div>
-                    <select id="session-list" name="sessions" size="15" onchange="controller.tryInitUserInput()" disabled>
-                    </select>
-                </div>
+    <!-- GAME -->
+    <div id="game" class="hidden">
+        <div id="game-viewer" class="hidden">
+            <div id="term-input-wrapper">
+                <input type="text" id="term-input">
+                <button id="term-confirm" onclick="controller.activeScreen.confirmDrawTerm();">Start</button>
             </div>
-            <div id="title-lobby" class="hidden">
-                <div id="session-name-info">Session Name Here</div>
-                <div style="width: 100%; text-align: center;" class="flex-centered-evenly">
-                    <button id="start-button" onclick="controller.websocketHandler.startRound()" disabled>Start</button>
-                </div>
+            <div id="canvasWrapperLeft">
+                <canvas id="canvas-left"></canvas>
+            </div>
+            <div id="canvasWrapperRight">
+                <canvas id="canvas-right"></canvas>
             </div>
         </div>
-
-        <!-- GAME -->
-        <div id="game" class="hidden">
-            <div id="game-viewer" class="hidden">
-                <div id="term-input-wrapper">
-                    <input type="text" id="term-input">
-                    <button id="term-confirm" onclick="">Start</button>
-                </div>
-                <div id="canvasWrapperLeft">
-                    <canvas id="canvas-left"></canvas>
-                </div>
-                <div id="canvasWrapperRight">
-                    <canvas id="canvas-right"></canvas>
-                </div>
+        <div id="game-drawer" class="flex-centered">
+            <div id="camWrapper">
+                <video id="webcamVideo" width="640" height="480" autoplay></video>
             </div>
-            <div id="game-drawer" class="flex-centered">
-                <div id="camWrapper" >
-                    <video id="webcamVideo" width="640" height="480" autoplay></video>
-                </div>
-                <div id="canvasWrapper">
-                    <canvas id="canvas"></canvas>
-                </div>
+            <div id="canvasWrapper">
+                <canvas id="canvas"></canvas>
             </div>
-        </div>
-
-        <!-- GAME OVER -->
-        <div id="gameover" class="hidden">
-            Game Over!
         </div>
 
     </div>
 
-    <!-- FOOTER (CAMS) -->
-    <div id="footer">
-        <div id="player-cams-wrapper" class="hidden">
-            <div id="player-0" class="player-display flex-centered-col">
-                <div class="flex-centered">
-                    <span class="player-name">Waiting for player...</span>
-                    <span class="player-score hidden">0</span>
-                </div>
-                <video class="player-video" width="320" height="240" autoplay></video>
-            </div>
-            <div id="player-1" class="player-display flex-centered-col">
-                <div class="flex-centered">
-                    <span class="player-name">Waiting for player...</span>
-                    <span class="player-score hidden">0</span>
-                </div>
-                <video class="player-video" width="320" height="240" autoplay></video>
-            </div>
-            <div id="player-2" class="player-display flex-centered-col">
-                <div class="flex-centered">
-                    <span class="player-name">Waiting for player...</span>
-                    <span class="player-score hidden">0</span>
-                </div>
-                <video id="player-video" width="320" height="240" autoplay></video>
-            </div>
-        </div>
+    <!-- GAME OVER -->
+    <div id="gameover" class="hidden">
+        Game Over!
     </div>
 
-    <!-- DRAW POINTER -->
-    <div id="pointer" style="position: fixed; left: 15px; top: 15px" class="hidden">
-        <i class="fas fa-hand-pointer"></i>
+</div>
+
+<!-- FOOTER (CAMS) -->
+<div id="footer">
+    <div id="player-cams-wrapper" class="hidden">
+        <div id="player-0" class="player-display flex-centered-col">
+            <div class="flex-centered">
+                <span class="player-name">Waiting for player...</span>
+                <span class="player-score hidden">0</span>
+            </div>
+            <video class="player-video" width="320" height="240" autoplay></video>
+        </div>
+        <div id="player-1" class="player-display flex-centered-col">
+            <div class="flex-centered">
+                <span class="player-name">Waiting for player...</span>
+                <span class="player-score hidden">0</span>
+            </div>
+            <video class="player-video" width="320" height="240" autoplay></video>
+        </div>
+        <div id="player-2" class="player-display flex-centered-col">
+            <div class="flex-centered">
+                <span class="player-name">Waiting for player...</span>
+                <span class="player-score hidden">0</span>
+            </div>
+            <video id="player-video" width="320" height="240" autoplay></video>
+        </div>
     </div>
+</div>
+
+<!-- DRAW POINTER -->
+<div id="pointer" style="position: fixed; left: 15px; top: 15px" class="hidden">
+    <i class="fas fa-hand-pointer"></i>
+</div>
 
 </body>
 </html>

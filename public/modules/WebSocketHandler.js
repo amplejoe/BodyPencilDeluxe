@@ -33,8 +33,6 @@ export class WebSocketHandler {
 
         this.socket.on("updateGameSession", (gameSession) => {
             this.controller.gameSession = gameSession;
-            // TODO update list
-            // TODO iterate over players, update scores etc.
             console.log(gameSession);
             console.log(this.controller.activeScreen.getState());
 
@@ -45,9 +43,10 @@ export class WebSocketHandler {
                 if (gameSession.players.length === 3 && controller.player.gameMaster) {
                     this.controller.activeScreen.enableGameStart();
                 }
-            } else if (this.controller.activeScreen.getState() === "game") {
+            } else {
+                // show drawTerm
+                $("#drawTerm").html(gameSession.drawTerm);
 
-                // TODO show drawTerm
                 //  update scores
 
             }
@@ -56,17 +55,25 @@ export class WebSocketHandler {
 
         this.socket.on("roundStarted", (gameSession) => {
             controller.switchScreen('game');
-            // TODO rolle unterscheiden (viewer, drawer)
+        });
 
+        this.socket.on("confirmStartDrawing", () => {
+            if (controller.player.currentRole === "drawer") {
+                controller.activeScreen.startDrawing();
+            }
         });
 
         this.socket.on("tick", (time) => {
-            // TODO update timer
+            $("#timer").html(time + " sec");
         });
 
         this.socket.on("timeover", (gameSession) => {
-            // TODO stop drawing
-            //  viewer: change to rating screen
+            $("#timer").html("time over");
+            if (controller.player.currentRole === "drawer") {
+                controller.activeScreen.stopDrawing();
+            } else {
+                //  TODO viewer: change to rating screen
+            }
         });
 
         this.socket.on("updatePlayer", (player) => {
@@ -108,6 +115,10 @@ export class WebSocketHandler {
 
     startRound() {
         this.socket.emit("startRound", {});
+    }
+
+    sendDrawTerm(term) {
+        this.socket.emit("startDrawing", term);
     }
 
     sendRtcSignal(signalData, otherPlayerId) {
