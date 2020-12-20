@@ -76,7 +76,7 @@ export class PoseDetector {
             const stream = await navigator.mediaDevices.getUserMedia(constraints);
             this.videoElement.srcObject = stream;
 
-            $("#player video")[0].srcObject = stream;
+            $("#player-0 video")[0].srcObject = stream;
 
             return true;
         }
