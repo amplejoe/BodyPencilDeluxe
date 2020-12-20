@@ -44,6 +44,7 @@ class SocketHandler {
             const gameSession = new GameSession(sessionName);
             gameSession.addPlayer(player);
             socket.gameSession = gameSession;
+            socket.emit("updateGameSession", gameSession);
 
             this.gameServer.gameSessions[sessionName] = gameSession;
 
@@ -84,8 +85,12 @@ class SocketHandler {
         socket.on('startSession', (data, callback) => {
             // TODO
             //  - set session state
-            //  - determine player roles
+            //  - determine player roles + bodyPart
 
+            // emit updateGameSession for all current player of the session
+            for (let player of socket.gameSession.players) {
+                this.playerToSocketMap[player.uuid].emit("updateGameSession", socket.gameSession);
+            }
             this.broadcastJoinableSessions();
         });
 

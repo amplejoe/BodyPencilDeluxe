@@ -61,11 +61,6 @@ export class Title {
             // playersWaiting[i].innerHTML = players[i].nickname;
             playerCamNames[i].innerHTML = players[i].nickname;
         }
-        // TODO: should check be done here?
-        if (players.length === 3) {
-            this.enableGameStart();
-        }
-
     }
 
     setNickName() {
@@ -110,7 +105,7 @@ export class Title {
         this.webSocketHandler.createGameSession(
             (data) => {
                 console.log("created session " + data.sessionName);
-                // TODO display sessionName
+                $("#session-name-info").html(data.sessionName);
                 this.changeState("title-lobby");
                 this.showPlayerCams();
             }
@@ -135,6 +130,7 @@ export class Title {
                             controller.rtcPeers[otherPlayer.uuid] = new RTCPeer(true, otherPlayer);
                         }
                     }
+                    $("#session-name-info").html(selectedSession);
                     this.changeState("title-lobby");
                     this.showPlayerCams();
                 }

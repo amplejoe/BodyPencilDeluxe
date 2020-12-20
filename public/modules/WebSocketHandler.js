@@ -41,7 +41,10 @@ export class WebSocketHandler {
             // title state
             if (this.controller.activeScreen.getState() === "title-init" ||
                 this.controller.activeScreen.getState() === "title-lobby") {
-               this.controller.activeScreen.setPlayerNames(gameSession.players);
+                this.controller.activeScreen.setPlayerNames(gameSession.players);
+                if (gameSession.players.length === 3 && controller.player.gameMaster) {
+                    this.controller.activeScreen.enableGameStart();
+                }
             }
 
         });
