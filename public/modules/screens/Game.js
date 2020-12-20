@@ -57,6 +57,8 @@ export class Game {
             this.canvasRight = new Canvas("canvas-right");
 
         } else {
+            document.querySelector("#game-viewer").className = "hidden";
+            document.querySelector("#game-drawer").className = "hidden";
             toastr.error("No role defined for player!");
         }
 
