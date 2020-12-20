@@ -3,6 +3,8 @@
 #heading {
     min-height: 10vh;
     border: 1px solid green;
+    /* font-family: 'Montserrat', sans-serif; */
+    font-family: 'Pacifico', cursive;
 }
 
 #info {
@@ -10,7 +12,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: center; */
-
+    font-family: 'Montserrat', sans-serif;
     min-height: 5vh;
     border: 1px solid green;
 }
@@ -20,11 +22,13 @@
     min-height: 52vh;
     border: 1px solid green;
     overflow: hidden;
+    font-family: 'Montserrat', sans-serif;
 }
 
 #footer {
     min-height: 15vh;
     border: 1px solid green;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .player-video
@@ -99,6 +103,3 @@
 .hidden {
     display: none;
 }
-
-
-
