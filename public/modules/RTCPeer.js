@@ -28,8 +28,7 @@ export class RTCPeer {
         })
 
         this.peer.on('connect', () => {
-            console.log('CONNECT');
-            // TODO start streaming...
+            console.log('webrtc connected!');
         })
 
         this.peer.on('data', data => {
@@ -42,12 +41,11 @@ export class RTCPeer {
             console.log("stream received!");
 
             // take the next available video element
-            // TODO somehow keep track of which player is on which position...
             for (let videoElement of $(".player-display video")) {
                 if (!videoElement.srcObject) {
                     videoElement.srcObject = stream;
                     videoElement.play();
-                    $(videoElement).parent().playerId = this.otherPlayerId; // very nice workaround
+                    $(videoElement).parent().playerId = this.otherPlayerId; // very nice workaround (not!)
                     break;
                 }
             }
@@ -55,7 +53,6 @@ export class RTCPeer {
         })
     }
 
-    // TODO call this when we get signal data from the ws server
     signal(signalData) {
         this.peer.signal(signalData);
     }

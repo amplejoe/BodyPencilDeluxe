@@ -18,10 +18,6 @@ export class Title {
         document.querySelector("#nicknameInput").value = localStorage.getItem('nickName');
 
         console.log("Title initialized.");
-
-        // controller.websocketHandler.getAllJoinableSessions((sessions) => {
-        //     // TODO fill dropdown list
-        // });
     }
 
     getState() {

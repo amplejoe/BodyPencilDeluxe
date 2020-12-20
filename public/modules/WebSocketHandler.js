@@ -45,14 +45,34 @@ export class WebSocketHandler {
                 if (gameSession.players.length === 3 && controller.player.gameMaster) {
                     this.controller.activeScreen.enableGameStart();
                 }
+            } else if (this.controller.activeScreen.getState() === "game") {
+
+                // TODO show drawTerm
+                //  update scores
+
             }
 
+        });
+
+        this.socket.on("roundStarted", (gameSession) => {
+            controller.switchScreen('game');
+            // TODO rolle unterscheiden (viewer, drawer)
+
+        });
+
+        this.socket.on("tick", (time) => {
+            // TODO update timer
+        });
+
+        this.socket.on("timeover", (gameSession) => {
+            // TODO stop drawing
+            //  viewer: change to rating screen
         });
 
         this.socket.on("updatePlayer", (player) => {
             this.controller.player = player;
             // document.querySelectorAll(".player-waiting")[0].innerHTML = player.nickname;
-            document.querySelectorAll(".player-name")[0].innerHTML = player.nickname;
+            // document.querySelectorAll(".player-name")[0].innerHTML = player.nickname;
             // document.querySelector("#session-name-info").innerHTML = this.controller.gameSession.sessionName;
             console.log(player);
         });
@@ -86,12 +106,12 @@ export class WebSocketHandler {
         this.socket.emit("joinSession", {nickname: $("#nicknameInput").val(), sessionName}, callback);
     }
 
+    startRound() {
+        this.socket.emit("startRound", {});
+    }
+
     sendRtcSignal(signalData, otherPlayerId) {
         this.socket.emit("signalRTC", {signalData, otherPlayerId});
     }
-
-    // TODO notify that posenet is ready (otherwise start should not be possible)
-    // TODO start the session (only for gameMaster -> some flag for that (gamemaster is the one who creates a session)
-
 
 }

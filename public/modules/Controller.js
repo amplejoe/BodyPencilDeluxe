@@ -71,7 +71,7 @@ export class Controller {
             }
         );
 
-        // TODO: remove body part selection list
+        // TODO: remove/hide body part selection list
         this.populateBodyPartList();
 
         console.log("Controller initialized.")

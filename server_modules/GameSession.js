@@ -12,9 +12,8 @@ class GameSession {
         this.sessionName = sessionName;
         this.players = [];
         this.state = GameSession.GAME_STATES.LOBBY;
+        this.drawTerm = null;
     }
-
-    // TODO emit "updateGameSession" event when something changes
 
     isJoinable() {
         return this.state === GameSession.GAME_STATES.LOBBY && this.players.length < 3;
