@@ -57,7 +57,7 @@ export class Game {
             this.canvasRight = new Canvas("canvas-right");
 
         } else {
-            TransformStream.error("No role defined for player!");
+            toastr.error("No role defined for player!");
         }
 
 
