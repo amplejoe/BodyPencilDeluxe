@@ -70,8 +70,8 @@ export class WebSocketHandler {
         this.socket.emit("joinSession", {nickname: $("#nicknameInput").val(), sessionName}, callback);
     }
 
-    sendRtcSignal(signalData, otherPlayer) {
-        this.socket.emit("signalRTC", {signalData, otherPlayer});
+    sendRtcSignal(signalData, otherPlayerId) {
+        this.socket.emit("signalRTC", {signalData, otherPlayerId});
     }
 
     // TODO notify that posenet is ready (otherwise start should not be possible)

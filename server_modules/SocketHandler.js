@@ -75,17 +75,17 @@ class SocketHandler {
                 gameSession.addPlayer(player);
                 socket.gameSession = gameSession;
                 console.log(gameSession.players);
+
+                // emit updateGameSession for all current player of the session
+                for (let player of gameSession.players) {
+                    this.playerToSocketMap[player.uuid].emit("updateGameSession", gameSession);
+                }
+                this.broadcastJoinableSessions();
+
                 callback({message: "OK", currentPlayerList: gameSession.players});
             } else {
                 callback({err: `Session ${sessionName} does not exist or has already been started`});
             }
-
-            // emit updateGameSession for all current player of the session
-            for (let player of gameSession.players) {
-                this.playerToSocketMap[player.uuid].emit("updateGameSession", gameSession);
-            }
-
-            this.broadcastJoinableSessions();
 
             this.gameServer.printState();
         });
@@ -97,11 +97,11 @@ class SocketHandler {
         });
 
         socket.on('signalRTC', data => {
-            let otherSocket = this.playerToSocketMap[data.otherPlayer.uuid];
+            let otherSocket = this.playerToSocketMap[data.otherPlayerId];
             if (otherSocket) {
                 otherSocket.emit('signalRTC', {signalData: data.signalData, player: player});
             } else {
-                console.log("found no socket for player " + data.otherPlayer.uuid);
+                console.log("found no socket for player " + data.otherPlayerId);
             }
         });
 

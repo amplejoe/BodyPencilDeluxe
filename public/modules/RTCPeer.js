@@ -1,7 +1,7 @@
 export class RTCPeer {
 
     constructor(initiator, otherPlayer) {
-        this.otherPlayer = otherPlayer;
+        this.otherPlayerId = otherPlayer.uuid;
 
         this.peer = new SimplePeer({
             initiator: initiator,
@@ -24,7 +24,7 @@ export class RTCPeer {
         this.peer.on('signal', data => {
             // console.log('SIGNAL', JSON.stringify(data));
             // send this data to the other peer (via websocket with other player id)
-            controller.websocketHandler.sendRtcSignal(data, this.otherPlayer);
+            controller.websocketHandler.sendRtcSignal(data, this.otherPlayerId);
         })
 
         this.peer.on('connect', () => {
@@ -41,16 +41,16 @@ export class RTCPeer {
 
             console.log("stream received!");
 
-            // got remote video stream, now let's show it in a video tag
-            var video = $("#opponent-1 video")[0];
-
-            if ('srcObject' in video) {
-                video.srcObject = stream
-            } else {
-                video.src = window.URL.createObjectURL(stream) // for older browsers
+            // take the next available video element
+            // TODO somehow keep track of which player is on which position...
+            for (let videoElement of $(".player-display video")) {
+                if (!videoElement.srcObject) {
+                    videoElement.srcObject = stream;
+                    videoElement.play();
+                    break;
+                }
             }
 
-            video.play()
         })
     }
 
