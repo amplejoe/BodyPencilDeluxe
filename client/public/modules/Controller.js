@@ -16,6 +16,8 @@ export class Controller {
         this.gameSession = null;
         this.player = null;
 
+        this.rtcPeers = {}; // map player uuid -> RTCPeer instance
+
         // tmp global cfg
         console.log(`test cfg -- globals.testvar: ${globals.testvar}`)
 

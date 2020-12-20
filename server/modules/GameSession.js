@@ -17,7 +17,6 @@ class GameSession {
 
     addPlayer(player) {
         if (this.state === GAME_STATES.LOBBY) {
-            player.gameSession = this;
             this.players.push(player);
         } else {
             console.log("cannot add player in game state " + this.state);

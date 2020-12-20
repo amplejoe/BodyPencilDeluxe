@@ -1,3 +1,5 @@
+import {RTCPeer} from "./RTCPeer.js";
+
 export class WebSocketHandler {
 
     constructor(controller, url) {
@@ -32,6 +34,18 @@ export class WebSocketHandler {
             this.controller.player = player;
         });
 
+        this.socket.on("signalRTC", (data) => {
+            console.log(data);
+            // get corresponding rtcPeer based on data.player
+            // if this is the first signal, it does not exist yet and needs to be created
+            let rtcPeer = controller.rtcPeers[data.player.uuid];
+            if (!rtcPeer) {
+                rtcPeer = new RTCPeer(false, data.player);
+                controller.rtcPeers[data.player.uuid] = rtcPeer;
+            }
+            // signal the rtcPeer
+            rtcPeer.signal(data.signalData);
+        });
 
     }
 
@@ -47,9 +61,11 @@ export class WebSocketHandler {
 
     // callback({message: "OK" | "does not exist" | "has started", currentPlayerList})
     joinGameSession(sessionName, callback) {
-        // webRTC negotiation: every time a client joins,
-        // it gets a list of all previous clients and sends an webrtc offer to each
         this.socket.emit("joinSession", {nickname: $("#nicknameInput").val(), sessionName}, callback);
+    }
+
+    sendRtcSignal(signalData, otherPlayer) {
+        this.socket.emit("signalRTC", {signalData, otherPlayer});
     }
 
     // TODO notify that posenet is ready (otherwise start should not be possible)
