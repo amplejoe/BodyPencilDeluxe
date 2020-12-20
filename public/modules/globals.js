@@ -1,6 +1,6 @@
 var globals = {};
 
-globals.websocketURL = "localhost:3000";
+globals.websocketURL = "body-pencil-deluxe-server.herokuapp.com";
 
 globals.selectedColor = "black";
 globals.selectedLineWidth = 5;
