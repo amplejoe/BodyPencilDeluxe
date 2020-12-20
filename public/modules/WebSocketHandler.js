@@ -50,6 +50,7 @@ export class WebSocketHandler {
             this.controller.player = player;
             // document.querySelectorAll(".player-waiting")[0].innerHTML = player.nickname;
             document.querySelectorAll(".player-name")[0].innerHTML = player.nickname;
+            // document.querySelector("#session-name-info").innerHTML = this.controller.gameSession.sessionName;
             console.log(player);
         });
 
