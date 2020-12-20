@@ -13,9 +13,9 @@ export class RTCPeer {
             video: true,
             audio: true
         };
-        navigator.mediaDevices.getUserMedia(constraints).then(stream => {
-            this.peer.addStream(stream);
-        });
+        // navigator.mediaDevices.getUserMedia(constraints).then(stream => {
+            // this.peer.addStream(stream);
+        // });
     }
 
     initEvents() {
